@@ -6,7 +6,7 @@ ManOpen also supports Apropos, which performs a keyword search on the man pages 
 
 ManOpen can be useful for opening a man page without using the command line, browsing and searching through man pages, or for printing them out. Customization options for power users are provided.
 
-ManOpen 3.x is based on ManOpen 2.x by Carl Lindberg, and ManOpen 1.x by Harald Schlangmann. This version has been greatly enhanced, with a new UI for macOS 11 ("Big Sur"), support for Dark Mode, native support for Apple Silicon Macs, plus several internal refactors and rewrites so the app will run on modern macOS releases. ManOpen requires macOS 10.9 ("Mavericks") or later.
+ManOpen 3.x is based on ManOpen 2.x by Carl Lindberg, and ManOpen 1.x by Harald Schlangmann. This version has been greatly enhanced, with a new UI for macOS 11 ("Big Sur"), support for Dark Mode, native support for Apple Silicon Macs, plus several internal refactors and rewrites so the app will run on modern macOS releases. ManOpen requires macOS 12 ("Monterey") or later.
 
 ManOpen is free software, licensed under the 3-clause (modified) BSD license. This program is provided "as is" and without any warranty. Source code is available on [GitHub](https://github.com/nickzman/ManOpen).
 
