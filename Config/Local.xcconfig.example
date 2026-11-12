@@ -1,0 +1,28 @@
+//
+//  Local.xcconfig.example
+//  ManOpen
+//
+//  Copy this file to Local.xcconfig in the same directory, then uncomment
+//  ONE of the signing options below. Local.xcconfig is ignored by git.
+//  Settings here override the defaults in Base.xcconfig.
+//
+
+// Option 1: Sign to run locally (ad-hoc). No Apple Developer account needed.
+// DEVELOPMENT_TEAM =
+// CODE_SIGN_STYLE = Manual
+// CODE_SIGN_IDENTITY = -
+
+// Option 2: Your own team, automatic signing (uses an Apple Development
+// certificate). Replace YOURTEAMID with your 10-character Team ID.
+// DEVELOPMENT_TEAM = YOURTEAMID
+
+// Option 3: Your own Developer ID Application certificate, manual signing.
+// DEVELOPMENT_TEAM = YOURTEAMID
+// CODE_SIGN_STYLE = Manual
+// CODE_SIGN_IDENTITY = Developer ID Application
+
+// The app's entitlements file declares an app group that belongs to the
+// default team. The app isn't sandboxed, so the group isn't used. If signing
+// with another identity fails because of it, uncomment this line to build
+// without the entitlements file:
+// MANOPEN_CODE_SIGN_ENTITLEMENTS =

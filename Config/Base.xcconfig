@@ -1,0 +1,21 @@
+//
+//  Base.xcconfig
+//  ManOpen
+//
+//  Project-wide code-signing settings. The values below are the defaults
+//  used for official builds.
+//
+//  To build with your own signing identity, copy Local.xcconfig.example to
+//  Local.xcconfig in this directory and edit it. Local.xcconfig is ignored
+//  by git, so personal signing settings never get committed.
+//
+
+DEVELOPMENT_TEAM = 8D98N325TG
+CODE_SIGN_STYLE = Automatic
+CODE_SIGN_IDENTITY = Apple Development
+
+// Entitlements for the ManOpen app target. Defined here rather than in the
+// target so that Local.xcconfig can override them.
+MANOPEN_CODE_SIGN_ENTITLEMENTS = ManOpen/ManOpen.entitlements
+
+#include? "Local.xcconfig"

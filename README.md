@@ -40,6 +40,19 @@ By default, ManOpen will look for man pages in the following locations:
 
 You can add additional paths as necessary in the Preferences window, under the Advanced tab. You can add a path by clicking the + button. If the path is inside a hidden folder or an application bundle, you can navigate into them by pressing Shift-Command-G to navigate to any arbitrary path.
 
+### Building
+
+ManOpen builds with current versions of Xcode, and requires macOS 12 or later. Open `ManOpen.xcodeproj` in Xcode and build the **ManOpen (Aggregate)** scheme, or build from the command line:
+
+```sh
+xcodebuild -project ManOpen.xcodeproj -scheme "ManOpen (Aggregate)" \
+    -configuration Release -destination 'generic/platform=macOS' build
+```
+
+Building for the generic "Any Mac" destination (as above, or with Product ▸ Archive) produces a universal build for Apple silicon and Intel Macs. Building for "My Mac" builds only for your Mac's architecture.
+
+Code-signing settings are in `Config/Base.xcconfig`. To sign with your own identity, copy `Config/Local.xcconfig.example` to `Config/Local.xcconfig` and uncomment one of the options in it. Git ignores `Local.xcconfig`. Don't change signing in Xcode's Signing & Capabilities pane, because that edits the shared project file.
+
 ### Version History
 
 Version 3.0:
