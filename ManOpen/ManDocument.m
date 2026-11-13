@@ -6,6 +6,7 @@
 #import "NSData+Utils.h"
 #import "ManWindowController.h"
 #import "MORestorationState.h"
+#import "MOManPagePrinting.h"
 
 
 @implementation ManDocument
@@ -305,7 +306,10 @@
 - (void)printDocumentWithSettings:(NSDictionary<NSPrintInfoAttributeKey,id> *)printSettings showPrintPanel:(BOOL)showPrintPanel delegate:(id)delegate didPrintSelector:(SEL)didPrintSelector contextInfo:(void *)contextInfo
 {
     ManWindowController *manWC = self.windowControllers.firstObject;
-    NSPrintOperation *operation = [NSPrintOperation printOperationWithView:manWC.textView];
+    /* Print a separate light-appearance copy, so Dark Mode never reaches the paper
+       and the window itself doesn't change. */
+    NSTextView *printView = MOMakeManPagePrintView([ManTextView class], manWC.textView);
+    NSPrintOperation *operation = [NSPrintOperation printOperationWithView:printView];
     NSPrintInfo      *printInfo = [operation printInfo];
 
     [printInfo setVerticallyCentered:NO];

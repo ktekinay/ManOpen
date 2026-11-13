@@ -16,6 +16,7 @@
 + (void)registerManDefaults;
 
 - (IBAction)openFontPanel:(id)sender;
+- (IBAction)restoreDefaultColors:(id)sender;
 
 @end
 

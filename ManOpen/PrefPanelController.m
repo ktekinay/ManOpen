@@ -4,27 +4,7 @@
 #import <AppKit/AppKit.h>
 #import "ManDocumentController.h"
 #import "MOManPath.h"
-
-FOUNDATION_STATIC_INLINE NSColor *COLOR_FOR_DATA(NSData *colorData)
-{
-    NSColor *returnValue = nil;
-    
-    if (colorData == nil) return nil;
-    if (@available(macOS 10.13, *))
-    {
-        returnValue = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSColor class] fromData:colorData error:NULL];
-    }
-    else
-    {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        returnValue = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-    }
-    if (!returnValue)   // backward compatibility with ManOpen 2.x, which used the deprecated NSArchiver
-        returnValue = [NSUnarchiver unarchiveObjectWithData:colorData];
-#pragma  clang diagnostic pop
-    return returnValue;
-}
+#import "MOColorDefaults.h"
 
 @implementation NSUserDefaults (ManOpenPreferences)
 
@@ -32,7 +12,7 @@ FOUNDATION_STATIC_INLINE NSColor *COLOR_FOR_DATA(NSData *colorData)
 {
     NSData *colorData = [self dataForKey:key];
     
-    return COLOR_FOR_DATA(colorData);
+    return MOColorFromData(colorData);
 }
 - (NSColor *)manTextColor
 {
@@ -82,21 +62,6 @@ FOUNDATION_STATIC_INLINE NSColor *COLOR_FOR_DATA(NSData *colorData)
 - (void)setUpManPathUI;
 @end
 
-FOUNDATION_STATIC_INLINE NSData *DATA_FOR_COLOR(NSColor *color)
-{
-    if (@available(macOS 10.13, *))
-    {
-        return [NSKeyedArchiver archivedDataWithRootObject:color requiringSecureCoding:YES error:NULL];
-    }
-    else
-    {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        return [NSKeyedArchiver archivedDataWithRootObject:color];
-#pragma clang diagnostic pop
-    }
-}
-
 @implementation PrefPanelController
 
 + (void)registerManDefaults
@@ -105,17 +70,21 @@ FOUNDATION_STATIC_INLINE NSData *DATA_FOR_COLOR(NSColor *color)
     NSFileManager *manager = [NSFileManager defaultManager];
     NSDictionary *defaults;
     NSString *nroff   = @"nroff -mandoc '%@'";
-    NSData *textColor = [userDefaults dataForKey:@"TextColor"]; // historical name
-    NSData *linkColor = [userDefaults dataForKey:@"LinkColor"]; // historical name
-    NSData *bgColor = [userDefaults dataForKey:@"BackgroundColor"]; // historical name
+    NSData *textColor, *linkColor, *bgColor;
+
+    MOMigrateColorDefaults(userDefaults); // drop stored copies of the old fixed link color
+    textColor = [userDefaults dataForKey:MOLegacyTextColorKey];
+    linkColor = [userDefaults dataForKey:MOLegacyLinkColorKey];
+    bgColor = [userDefaults dataForKey:MOLegacyBackgroundColorKey];
     NSMutableArray *manpath = [[[userDefaults stringForKey:@"ManPath"] componentsSeparatedByString:@":"] mutableCopy];  // historical name
     
+    /* System colors, which adapt to Light Mode, Dark Mode and Increase Contrast. */
     if (textColor == nil)
-        textColor = DATA_FOR_COLOR([NSColor textColor]);
+        textColor = MODataFromColor([NSColor textColor]);
     if (linkColor == nil)
-        linkColor = DATA_FOR_COLOR([NSColor colorWithDeviceRed:0.1f green:0.1f blue:1.0f alpha:1.0f]);
+        linkColor = MODataFromColor(MODefaultLinkColor());
     if (bgColor == nil)
-        bgColor = DATA_FOR_COLOR([NSColor textBackgroundColor]);
+        bgColor = MODataFromColor([NSColor textBackgroundColor]);
     if (!manpath)
     {
         manpath = [[NSMutableArray alloc] init];
@@ -184,6 +153,21 @@ FOUNDATION_STATIC_INLINE NSData *DATA_FOR_COLOR(NSColor *color)
 {
     [super windowDidLoad];
 
+    /* A frame saved by an earlier version can be shorter than the window now needs
+       (the Appearance tab gained a Restore Default Colors button). */
+    NSWindow *window = self.window;
+    NSSize contentSize = [window contentRectForFrameRect:window.frame].size;
+    NSSize minimumSize = NSMakeSize(340.0, 398.0); // the content size PrefPanel.xib is laid out for
+    window.contentMinSize = minimumSize;
+    if (contentSize.width < minimumSize.width || contentSize.height < minimumSize.height)
+    {
+        NSRect frame = window.frame;
+        CGFloat top = NSMaxY(frame);
+        frame.size = [window frameRectForContentRect:NSMakeRect(0.0, 0.0, MAX(contentSize.width, minimumSize.width), MAX(contentSize.height, minimumSize.height))].size;
+        frame.origin.y = top - frame.size.height;
+        [window setFrame:frame display:NO];
+    }
+
     [self setUpDefaultManViewerApp];
     [self setUpManPathUI];
     [self setFontFieldToFont:[[NSUserDefaults standardUserDefaults] manFont]];
@@ -195,6 +179,12 @@ FOUNDATION_STATIC_INLINE NSData *DATA_FOR_COLOR(NSColor *color)
     [fontField setFont:font];
     [fontField setStringValue:
         [NSString stringWithFormat:@"%@ %.1f", [font familyName], [font pointSize]]];
+}
+
+/* Removes the stored colors, so the system's dynamic defaults apply again. */
+- (IBAction)restoreDefaultColors:(id)sender
+{
+    MORestoreDefaultColors([NSUserDefaults standardUserDefaults]);
 }
 
 - (IBAction)openFontPanel:(id)sender
@@ -344,13 +334,13 @@ FOUNDATION_STATIC_INLINE NSData *DATA_FOR_COLOR(NSColor *color)
 
 - (id)transformedValue:(id)value
 {
-    return COLOR_FOR_DATA(value);
+    return MOColorFromData(value);
 }
 
 
 - (id)reverseTransformedValue:(id)value
 {
-    return DATA_FOR_COLOR(value);
+    return MODataFromColor(value);
 }
 
 @end
