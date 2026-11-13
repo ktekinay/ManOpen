@@ -7,6 +7,12 @@
 #import "ManWindowController.h"
 #import "MORestorationState.h"
 #import "MOManPagePrinting.h"
+#import "MOManPageStyle.h"
+
+@interface ManDocument ()
+/* The command the page was generated from, before the cat2rtf filter. */
+@property(nonatomic, copy) NSString *sourceCommand;
+@end
 
 
 @implementation ManDocument
@@ -103,11 +109,10 @@
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		NSTextStorage *storage = nil;
 		NSFont        *manFont = [defaults manFont];
-		NSColor       *linkColor = [defaults manLinkColor];
-		NSColor       *textColor = [defaults manTextColor];
-		NSColor       *backgroundColor = [defaults manBackgroundColor];
+		NSColor       *linkColor = MOManPageLinkColor();
+		NSColor       *textColor = MOManPageTextColor();
+		NSColor       *backgroundColor = MOManPageBackgroundColor();
         ManWindowController *manWC = self.windowControllers.firstObject;
-        NSMutableDictionary *linkTextAttribtues = manWC.textView.linkTextAttributes.mutableCopy;
 		
 		if (manWC.textView == nil || self.hasLoaded) return;
 		
@@ -135,42 +140,27 @@
 		[self.sections removeAllObjects];
 		[self.sectionRanges removeAllObjects];
 		
-		/* Convert the attributed string to use the user's chosen font and text color */
+		/* Find the section headings, then apply the user's font and colors */
 		if (storage != nil)
 		{
-			NSFontManager *manager = [NSFontManager sharedFontManager];
-			NSString      *family = [manFont familyName];
-			CGFloat       size    = [manFont pointSize];
-			NSUInteger    currIndex = 0;
+			NSUInteger currIndex = 0;
+			
+			while (currIndex < [storage length])
+			{
+				NSRange currRange;
+				NSDictionary *attribs = [storage attributesAtIndex:currIndex effectiveRange:&currRange];
+				NSFont       *font = [attribs objectForKey:NSFontAttributeName];
+				
+				/* We mark "sections" with Helvetica fonts */
+				if (font != nil && ![[font familyName] isEqualToString:@"Courier"]) {
+					[self addSectionHeader:[[storage string] substringWithRange:currRange] range:currRange];
+				}
+				currIndex = NSMaxRange(currRange);
+			}
 			
 			@try
 			{
-				[storage beginEditing];
-				
-				while (currIndex < [storage length])
-				{
-					NSRange currRange;
-					NSDictionary *attribs = [storage attributesAtIndex:currIndex effectiveRange:&currRange];
-					NSFont       *font = [attribs objectForKey:NSFontAttributeName];
-					
-					/* We mark "sections" with Helvetica fonts */
-					if (font != nil && ![[font familyName] isEqualToString:@"Courier"]) {
-						[self addSectionHeader:[[storage string] substringWithRange:currRange] range:currRange];
-					}
-					
-					if (font != nil && ![[font familyName] isEqualToString:family])
-						font = [manager convertFont:font toFamily:family];
-					if (font != nil && [font pointSize] != size)
-						font = [manager convertFont:font toSize:size];
-					if (font != nil)
-						[storage addAttribute:NSFontAttributeName value:font range:currRange];
-					
-					[storage addAttribute:NSForegroundColorAttributeName value:textColor range:currRange];
-					
-					currIndex = NSMaxRange(currRange);
-				}
-				
-				[storage endEditing];
+				MOApplyManPageStyle(storage, manFont, textColor);
 			}
 			@catch (NSException *localException)
 			{
@@ -181,8 +171,7 @@
 			[manWC.textView.window invalidateCursorRectsForView:manWC.textView];
 		}
 		
-        [linkTextAttribtues setValue:linkColor forKey:NSForegroundColorAttributeName];
-        manWC.textView.linkTextAttributes = linkTextAttribtues;
+        manWC.textView.linkTextAttributes = MOManPageLinkAttributes(manWC.textView.linkTextAttributes, linkColor);
 		[manWC.textView setBackgroundColor:backgroundColor];
         [manWC.textView.window.toolbar validateVisibleItems];
 		
@@ -223,6 +212,7 @@
     ManDocumentController *docController = [ManDocumentController sharedDocumentController];
     NSString *fullCommand = [NSString stringWithFormat:@"%@ | %@", command, [self filterCommand]];
 	
+    self.sourceCommand = command;
     self.taskData = nil;
     self.taskData = [docController dataByExecutingCommand:fullCommand];
 
@@ -295,6 +285,72 @@
     }
 
     return YES;
+}
+
+#pragma mark - Following preference changes (Plans 1a.9)
+
+- (MOManPageSource)pageSource
+{
+    NSString *type = self.restoreData[MORestoreFileTypeKey];
+
+    if (self.restoreData[MORestoreFileURLKey] == nil)
+        return MOManPageSourceName;
+    if ([type isEqualToString:@"cat"] || [type isEqualToString:@"catgz"])
+        return MOManPageSourceCatFile;
+    return MOManPageSourceNroffFile;
+}
+
+- (void)applyCurrentStyle
+{
+    ManWindowController *manWC = self.windowControllers.firstObject;
+    ManTextView *textView = manWC.textView;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    if (textView == nil)
+        return;
+
+    NSUInteger top = [textView characterIndexAtTop];
+    // The colors are the shared man page colors, which follow Preferences when drawn;
+    // only the font needs an edit. A color change is just a redraw.
+    BOOL fontsChanged = MOApplyManPageStyle(textView.textStorage, defaults.manFont, MOManPageTextColor());
+
+    if (![textView.linkTextAttributes[NSForegroundColorAttributeName] isEqual:MOManPageLinkColor()])
+        textView.linkTextAttributes = MOManPageLinkAttributes(textView.linkTextAttributes, MOManPageLinkColor());
+    if (![textView.backgroundColor isEqual:MOManPageBackgroundColor()])
+        textView.backgroundColor = MOManPageBackgroundColor();
+    [textView setNeedsDisplay:YES];
+    if (fontsChanged)
+        [textView scrollCharacterIndexToTop:top];
+}
+
+- (void)reloadContent
+{
+    ManWindowController *manWC = self.windowControllers.firstObject;
+    ManTextView *textView = manWC.textView;
+    NSURL *fileURL = self.restoreData[MORestoreFileURLKey];
+    NSString *fileType = self.restoreData[MORestoreFileTypeKey];
+
+    if (fileURL == nil && self.sourceCommand == nil)
+        return;
+
+    NSString *oldText = [textView.string copy] ?: @"";
+    NSUInteger oldTop = (textView != nil) ? [textView characterIndexAtTop] : 0;
+    NSArray<NSString *> *oldSections = [self.sections copy] ?: @[];
+    NSArray<NSValue *> *oldRanges = [self.sectionRanges copy] ?: @[];
+    NSArray<NSValue *> *oldSelection = textView.selectedRanges;
+
+    self.hasLoaded = NO;
+    if (fileURL != nil)
+        [self readFromURL:fileURL ofType:fileType error:NULL]; // builds the nroff command again from Preferences
+    else
+        [self loadCommand:self.sourceCommand];
+
+    if (textView == nil)
+        return;
+    if ([textView.string isEqualToString:oldText] && oldSelection != nil)
+        textView.selectedRanges = oldSelection;
+    [textView scrollCharacterIndexToTop:MOAnchorAfterReload(oldText, oldTop, oldSections, oldRanges,
+                                                            textView.string, self.sections ?: @[], self.sectionRanges ?: @[])];
 }
 
 /* Always use global page layout */

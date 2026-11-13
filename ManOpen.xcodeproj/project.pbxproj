@@ -102,6 +102,14 @@
 		0E87AAE3B5A56D16D798D8C7 /* MOReopenPolicy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D0F339B163A77B2FD309D7C /* MOReopenPolicy.h */; };
 		CB3A352A185B75074D8D876B /* MOReopenPolicyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82787DAE1A69300F8A5D71C5 /* MOReopenPolicyTests.m */; };
 		3650B88B0668799DD3B4E683 /* MOPanelFontTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B298B5D1CB92665E874E730 /* MOPanelFontTests.m */; };
+		A31C26ABEDA29CB549EA7DC6 /* MOManPageStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EB9CA8071470981ECD921 /* MOManPageStyle.m */; };
+		F552BF06C139CFB984101AD3 /* MOManPageStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EB9CA8071470981ECD921 /* MOManPageStyle.m */; };
+		289C2C67C8BB8B5F21FD518D /* MOManPageStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = B4A8B9E950ADF0484B4A4101 /* MOManPageStyle.h */; };
+		EC392BE7B0E7D600C044E8A4 /* MOPreferenceUpdates.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3D984DDCF8C47D5B3ED321 /* MOPreferenceUpdates.m */; };
+		89925C7A0269F8CBE4BBB33C /* MOPreferenceUpdates.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3D984DDCF8C47D5B3ED321 /* MOPreferenceUpdates.m */; };
+		BCCB720231256EA2F985DD05 /* MOPreferenceUpdates.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A1B82FDE225F2CDC5C92EC1 /* MOPreferenceUpdates.h */; };
+		915BE137C8D5212639FE22EA /* MOManPageStyleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F959DF3AE1ED065E19C148BA /* MOManPageStyleTests.m */; };
+		FD5AC802850BB3A4399A33C2 /* MOPreferenceUpdatesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D135230E10878CD3C344B0B /* MOPreferenceUpdatesTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,6 +260,12 @@
 		8D0F339B163A77B2FD309D7C /* MOReopenPolicy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOReopenPolicy.h; sourceTree = "<group>"; };
 		82787DAE1A69300F8A5D71C5 /* MOReopenPolicyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOReopenPolicyTests.m; sourceTree = "<group>"; };
 		5B298B5D1CB92665E874E730 /* MOPanelFontTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOPanelFontTests.m; sourceTree = "<group>"; };
+		8C6EB9CA8071470981ECD921 /* MOManPageStyle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOManPageStyle.m; sourceTree = "<group>"; };
+		B4A8B9E950ADF0484B4A4101 /* MOManPageStyle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOManPageStyle.h; sourceTree = "<group>"; };
+		AA3D984DDCF8C47D5B3ED321 /* MOPreferenceUpdates.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOPreferenceUpdates.m; sourceTree = "<group>"; };
+		1A1B82FDE225F2CDC5C92EC1 /* MOPreferenceUpdates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOPreferenceUpdates.h; sourceTree = "<group>"; };
+		F959DF3AE1ED065E19C148BA /* MOManPageStyleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOManPageStyleTests.m; sourceTree = "<group>"; };
+		2D135230E10878CD3C344B0B /* MOPreferenceUpdatesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOPreferenceUpdatesTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,6 +379,8 @@
 		D39278F10821FFA400376676 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AA3D984DDCF8C47D5B3ED321 /* MOPreferenceUpdates.m */,
+				8C6EB9CA8071470981ECD921 /* MOManPageStyle.m */,
 				E023F1F1328FFFA90CF12A5B /* MOReopenPolicy.m */,
 				59D4FFFBA00E30B8505800A8 /* MOManPagePrinting.m */,
 				28E2ED0A02655182E5C4CB77 /* MOColorDefaults.m */,
@@ -387,6 +403,8 @@
 		D39278FE0821FFA400376676 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				1A1B82FDE225F2CDC5C92EC1 /* MOPreferenceUpdates.h */,
+				B4A8B9E950ADF0484B4A4101 /* MOManPageStyle.h */,
 				8D0F339B163A77B2FD309D7C /* MOReopenPolicy.h */,
 				3E2B9A0C7F49E123C1203E4C /* MOManPagePrinting.h */,
 				92CD9BEEA13E91B574757BF3 /* MOColorDefaults.h */,
@@ -557,6 +575,8 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				2D135230E10878CD3C344B0B /* MOPreferenceUpdatesTests.m */,
+				F959DF3AE1ED065E19C148BA /* MOManPageStyleTests.m */,
 				5B298B5D1CB92665E874E730 /* MOPanelFontTests.m */,
 				82787DAE1A69300F8A5D71C5 /* MOReopenPolicyTests.m */,
 				5F398270F0FE3E20210CEA51 /* MOManPagePrintingTests.m */,
@@ -580,6 +600,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCCB720231256EA2F985DD05 /* MOPreferenceUpdates.h in Headers */,
+				289C2C67C8BB8B5F21FD518D /* MOManPageStyle.h in Headers */,
 				0E87AAE3B5A56D16D798D8C7 /* MOReopenPolicy.h in Headers */,
 				0FDC24032438A3A4A375B0F0 /* MOManPagePrinting.h in Headers */,
 				60016CFC8B330AE363A2F3B6 /* MOColorDefaults.h in Headers */,
@@ -784,6 +806,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC392BE7B0E7D600C044E8A4 /* MOPreferenceUpdates.m in Sources */,
+				A31C26ABEDA29CB549EA7DC6 /* MOManPageStyle.m in Sources */,
 				C775F4ED08B4F406155F98DF /* MOReopenPolicy.m in Sources */,
 				A8AC188EA601CFB2C81DD016 /* MOManPagePrinting.m in Sources */,
 				8D5EAEB3FA8CD65D7FE33B63 /* MOColorDefaults.m in Sources */,
@@ -832,6 +856,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD5AC802850BB3A4399A33C2 /* MOPreferenceUpdatesTests.m in Sources */,
+				915BE137C8D5212639FE22EA /* MOManPageStyleTests.m in Sources */,
+				89925C7A0269F8CBE4BBB33C /* MOPreferenceUpdates.m in Sources */,
+				F552BF06C139CFB984101AD3 /* MOManPageStyle.m in Sources */,
 				3650B88B0668799DD3B4E683 /* MOPanelFontTests.m in Sources */,
 				CB3A352A185B75074D8D876B /* MOReopenPolicyTests.m in Sources */,
 				615CE599F567659ADCC0DA53 /* MOReopenPolicy.m in Sources */,

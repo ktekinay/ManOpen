@@ -10,6 +10,7 @@
 #import "ManDocument.h"
 #import "ManDocumentController.h"
 #import "NSData+Utils.h"
+#import "MOManPageStyle.h"
 
 @interface ManWindowController ()
 
@@ -44,8 +45,8 @@
     }
 
     self.textView.textStorage.mutableString.string = NSLocalizedString(@"Loading…", @"Displayed in the text view while the text is loading");
-    self.textView.backgroundColor = defaults.manBackgroundColor;
-    self.textView.textColor = defaults.manTextColor;
+    self.textView.backgroundColor = MOManPageBackgroundColor();
+    self.textView.textColor = MOManPageTextColor();
     [self.document performSelector:@selector(showData) withObject:nil afterDelay:0.0];
 
     [self.window makeFirstResponder:self.textView];
@@ -284,6 +285,27 @@
         rect.size.height = height;
 
     [self scrollRectToVisible:rect];
+}
+
+- (NSUInteger)characterIndexAtTop
+{
+    NSLayoutManager *layout = [self layoutManager];
+    NSPoint top = [self visibleRect].origin;
+
+    if (self.textStorage.length == 0)
+        return 0;
+    top.x -= self.textContainerOrigin.x;
+    top.y -= self.textContainerOrigin.y;
+    return [layout characterIndexForGlyphAtIndex:[layout glyphIndexForPoint:top inTextContainer:[self textContainer]]];
+}
+
+- (void)scrollCharacterIndexToTop:(NSUInteger)index
+{
+    NSUInteger length = self.textStorage.length;
+
+    if (length == 0)
+        return;
+    [self scrollRangeToTop:NSMakeRange(MIN(index, length - 1), 1)];
 }
 
 /* Make space page down (and shift/alt-space page up) */

@@ -9,6 +9,10 @@
 
 @interface ManTextView : NSTextView
 - (void)scrollRangeToTop:(NSRange)charRange;
+/* The character at the top of the visible part of the page. */
+- (NSUInteger)characterIndexAtTop;
+/* Scrolls so the line containing `index` is at the top (as far as the page allows). */
+- (void)scrollCharacterIndexToTop:(NSUInteger)index;
 @end
 
 NS_ASSUME_NONNULL_BEGIN

@@ -1,5 +1,6 @@
 
 #import <Cocoa/Cocoa.h>
+#import "MOPreferenceUpdates.h"
 
 @interface ManDocument : NSDocument
 
@@ -16,5 +17,12 @@
 - (void)loadCommand:(NSString *)command;
 
 - (void)showData;
+
+/* Where the page came from, which decides what a preference change does to it (Plans 1a.9). */
+@property(nonatomic, readonly) MOManPageSource pageSource;
+/* Applies the current font and colors from Preferences to the page in place, keeping the scroll position. */
+- (void)applyCurrentStyle;
+/* Generates the page again (for bold, italics or the nroff command), keeping the scroll position and selection. */
+- (void)reloadContent;
 
 @end

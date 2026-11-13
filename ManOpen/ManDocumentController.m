@@ -6,6 +6,8 @@
 #import "NSData+Utils.h"
 #import "MOCommandEnvironment.h"
 #import "MOReopenPolicy.h"
+#import "MOPreferenceUpdates.h"
+#import "MOManPageStyle.h"
 #import "MOSectionListing.h"
 #import "PrefPanelController.h"
 
@@ -52,6 +54,7 @@ NSString *EscapePath(NSString *path, BOOL addSurroundingQuotes)
 
 @interface ManDocumentController ()
 @property(nonatomic,assign) CFMessagePortRef messagePort;
+@property(nonatomic,strong) MOChangeCoalescer *preferenceUpdates;
 
 // These are the old DO methods. DO is deprecated, and has been removed from the app, but we still use these methods internally.
 - (oneway void)openName:(NSString *)name section:(NSString *)section manPath:(NSString *)manPath forceToFront:(BOOL)force;
@@ -133,8 +136,62 @@ static CFDataRef MessagePortCallback(CFMessagePortRef port, SInt32 messageID, CF
 		
 		[PrefPanelController registerManDefaults];
 		[[NSBundle mainBundle] loadNibNamed:@"DocController" owner:self topLevelObjects:NULL];
+        [self observePreferences];
 	}
     return self;
+}
+
+static void *MOPreferenceObservationContext = &MOPreferenceObservationContext;
+
+/* Open man pages follow changes to their preferences (Plans 1a.9). */
+- (void)observePreferences
+{
+    __weak ManDocumentController *weakSelf = self;
+
+    self.preferenceUpdates = [[MOChangeCoalescer alloc] initWithInterval:MOPreferenceUpdateInterval handler:^(NSUInteger changes) {
+        [weakSelf updateOpenPagesForPreferenceChanges:changes];
+    }];
+    for (NSString *key in MOObservedPreferenceKeys())
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:key options:0 context:MOPreferenceObservationContext];
+    [self updateManPageColors];
+}
+
+- (void)updateManPageColors
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    MOSetManPageColors(defaults.manTextColor, defaults.manLinkColor, defaults.manBackgroundColor);
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey, id> *)change context:(void *)context
+{
+    if (context == MOPreferenceObservationContext)
+        [self.preferenceUpdates noteChanges:MOUpdateForPreferenceKey(keyPath)];
+    else
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+}
+
+- (void)updateOpenPagesForPreferenceChanges:(MOManPageUpdate)changes
+{
+    if (changes & MOManPageUpdateRestyle)
+        [self updateManPageColors];
+    for (NSDocument *document in self.documents)
+    {
+        if (![document isKindOfClass:[ManDocument class]])
+            continue; // Apropos windows use the standard table font (L9)
+
+        ManDocument *page = (ManDocument *)document;
+        switch (MOActionForPage(changes, page.pageSource))
+        {
+            case MOManPageActionRegenerate:
+                [page reloadContent];
+                break;
+            case MOManPageActionRestyle:
+                [page applyCurrentStyle];
+                break;
+            case MOManPageActionNone:
+                break;
+        }
+    }
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
