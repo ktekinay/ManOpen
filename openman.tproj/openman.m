@@ -97,8 +97,8 @@ static BOOL OpenApp(NSURL *url, BOOL activate)
     return opened;
 }
 
-/* Waits up to `seconds` for a launched ManOpen to start listening. */
-static CFMessagePortRef ConnectToManOpen(double seconds)
+/* Waits up to `seconds` for a launched ManOpen to start listening; the caller releases the port. */
+static CFMessagePortRef CreateManOpenPort(double seconds)
 {
     CFMessagePortRef port = NULL;
 
@@ -131,6 +131,7 @@ int main (int argc, char * const *argv)
         NSMutableArray    *namesAndSections = [[NSMutableArray alloc] init];
         CFMessagePortRef  remotePort;
         SInt32            status;
+        BOOL              bringRunningAppForward = NO;
         NSData            *request;
 		
 		while ((c = getopt(argc,argv,"hbm:M:f:kaCcw")) != EOF)
@@ -214,12 +215,8 @@ int main (int argc, char * const *argv)
         {
             // A ManOpen that accepts requests is already running: launch nothing.
             // (Our environment, PAGER included, doesn't matter to it; ManOpen sets its own for man.)
-            if (forceToFront)
-            {
-                NSURL *running = MOChooseManOpenApp(nil, RunningApps(), NSHomeDirectory());
-                if (running != nil)
-                    OpenApp(running, YES); // brings the running copy forward
-            }
+            // It's brought forward only after the request is sent (below).
+            bringRunningAppForward = forceToFront;
         }
         else
         {
@@ -237,7 +234,7 @@ int main (int argc, char * const *argv)
                 exit(1);
             }
 
-            remotePort = ConnectToManOpen(10.0);
+            remotePort = CreateManOpenPort(10.0);
             if (remotePort == NULL)
             {
                 fprintf(stderr, "openman: could not connect to ManOpen at %s\n", appURL.path.fileSystemRepresentation);
@@ -270,13 +267,24 @@ int main (int argc, char * const *argv)
         
         // Once we've got all our data together, send the message to the app. The message ID below is intentional, because I feel like I went mental writing this (it was my third attempt at replacing the original DO code).
         request = [NSKeyedArchiver archivedDataWithRootObject:distributedDictionary requiringSecureCoding:YES error:NULL];
-        status = (request != nil) ? CFMessagePortSendRequest(remotePort, 5150, (__bridge CFDataRef)request, 10.0, 10.0, NULL, NULL) : kCFMessagePortTransportError;
+        status = (request != nil) ? CFMessagePortSendRequest(remotePort, 5150, (__bridge CFDataRef)request, 10.0, 10.0, bringRunningAppForward ? kCFRunLoopDefaultMode : NULL, NULL) : kCFMessagePortTransportError;
         CFRelease(remotePort);
 
         if (status != kCFMessagePortSuccess)
         {
             fprintf(stderr, "openman: could not send the request to ManOpen (error %d)\n", (int)status);
             exit(1);
+        }
+
+        // Bringing a running app forward sends it a "reopen" event, as a Dock click does. Sent
+        // before the request, it arrived while ManOpen had no windows, and with "Open title panel
+        // when no windows" on, the Title panel opened under the page. With a reply mode, the send
+        // waits until ManOpen has handled the request, so the page's window is open by now.
+        if (bringRunningAppForward)
+        {
+            NSURL *running = MOChooseManOpenApp(nil, RunningApps(), NSHomeDirectory());
+            if (running != nil)
+                OpenApp(running, YES);
         }
 	}
     exit(0);       // insure the process exit status is 0
