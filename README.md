@@ -68,6 +68,7 @@ Version 3.1:
 - You can now build and sign ManOpen with your own developer identity without editing the project file. See "Building" above.
 - Removed obsolete build phases and settings left over from older versions of Xcode.
 - Fixed man pages, searches, and File ▸ List Pages coming up empty when ManOpen was opened from Terminal (directly, with `open`, or by `openman`) and the shell's `PAGER` or `MANPAGER` was set to an interactive pager.
+- Fixed windows reopened at launch (with "Close windows when quitting an app" off, or "Save windows on quit" on) coming back blank, with no title and "No manual entry". Windows that can't be restored, such as a file that has since been deleted, are no longer reopened.
 - Added unit tests. See "Building" above.
 
 Version 3.0:

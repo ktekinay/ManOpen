@@ -4,11 +4,7 @@
 #import <AppKit/AppKit.h>
 #import "ManDocumentController.h"
 #import "PrefPanelController.h"
-
-@interface NSDocument (LionRestorationMethods)
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder;
-- (void)restoreStateWithCoder:(NSCoder *)coder;
-@end
+#import "MORestorationState.h"
 
 @interface AproposDocument ()
 @property(nonatomic,retain) NSString *searchString;
@@ -181,28 +177,34 @@
 }
 
 /* Document restoration */
-#define RestoreSearchString @"SearchString"
-#define RestoreTitle @"Title"
-
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
 {
     [super encodeRestorableStateWithCoder:coder];
-    [coder encodeObject:self.searchString forKey:RestoreSearchString];
-    [coder encodeObject:self.title forKey:RestoreTitle];
+    [coder encodeObject:self.searchString forKey:MORestoreSearchStringKey];
+    [coder encodeObject:self.title forKey:MORestoreAproposTitleKey];
 }
 
 - (void)restoreStateWithCoder:(NSCoder *)coder
 {
     [super restoreStateWithCoder:coder];
-    
-    if (![coder containsValueForKey:RestoreSearchString])
+
+    NSDictionary *restoreInfo = MODecodeAproposRestoreInfo(coder);
+
+    if (restoreInfo == nil)
+    {
+        /* Nothing usable was saved; don't leave an empty window behind. */
+        if (self.searchString == nil)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self close];
+            });
+        }
         return;
-    
-    NSString *search = [coder decodeObjectForKey:RestoreSearchString];
-    NSString *theTitle = [coder decodeObjectForKey:RestoreTitle];
+    }
+
     NSString *manPath = [[NSUserDefaults standardUserDefaults] manPath];
-    
-    [self _loadWithString:search manPath:manPath title:theTitle];
+
+    [self _loadWithString:restoreInfo[MORestoreSearchStringKey] manPath:manPath title:restoreInfo[MORestoreAproposTitleKey]];
     [[self windowControllers] makeObjectsPerformSelector:@selector(synchronizeWindowTitleWithDocumentName)];
     [self.tableView reloadData];
 }

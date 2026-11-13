@@ -5,17 +5,7 @@
 #import "PrefPanelController.h"
 #import "NSData+Utils.h"
 #import "ManWindowController.h"
-
-#define RestoreWindowDict @"RestoreWindowInfo"
-#define RestoreSection    @"Section"
-#define RestoreTitle      @"Title"
-#define RestoreName       @"Name"
-#define RestoreFileURL    @"URL"
-#define RestoreFileType   @"DocType"
-@interface NSDocument (LionRestorationMethods)
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder;
-- (void)restoreStateWithCoder:(NSCoder *)coder;
-@end
+#import "MORestorationState.h"
 
 
 @implementation ManDocument
@@ -47,9 +37,9 @@
     }
     
     self.restoreData = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                   name,    RestoreName,
-                   title,   RestoreTitle,
-                   section, RestoreSection,
+                   name,    MORestoreNameKey,
+                   title,   MORestoreTitleKey,
+                   section, MORestoreSectionKey,
                    nil];
     
     [command appendFormat:@" %@", name];
@@ -291,8 +281,8 @@
     self.xManPageURL = url;
     
     self.restoreData = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                   url,    RestoreFileURL,
-                   type,   RestoreFileType,
+                   url,    MORestoreFileURLKey,
+                   type,   MORestoreFileTypeKey,
                    nil];
 
     if (self.taskData == nil)
@@ -331,33 +321,47 @@
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
 {
     [super encodeRestorableStateWithCoder:coder];
-    [coder encodeObject:self.restoreData forKey:RestoreWindowDict];
+    [coder encodeObject:self.restoreData forKey:MORestoreWindowInfoKey];
 }
 
 - (void)restoreStateWithCoder:(NSCoder *)coder
 {
     [super restoreStateWithCoder:coder];
 
-    if (![coder containsValueForKey:RestoreWindowDict])
-        return;
+    NSDictionary *restoreInfo = MODecodeManPageRestoreInfo(coder);
+    BOOL restored;
 
-    NSDictionary *restoreInfo = [coder decodeObjectForKey:RestoreWindowDict];
-    if ([restoreInfo objectForKey:RestoreName] != nil)
+    if (restoreInfo[MORestoreNameKey] != nil)
     {
-        NSString *name = [restoreInfo objectForKey:RestoreName];
-        NSString *section = [restoreInfo objectForKey:RestoreSection];
-        NSString *title = [restoreInfo objectForKey:RestoreTitle];
         NSString *manPath = [[NSUserDefaults standardUserDefaults] manPath];
-        
-        [self _loadDocumentWithName:name section:section manPath:manPath title:title];
+
+        [self _loadDocumentWithName:restoreInfo[MORestoreNameKey]
+                            section:restoreInfo[MORestoreSectionKey]
+                            manPath:manPath
+                              title:restoreInfo[MORestoreTitleKey]];
+        restored = YES;
     }
     /* Usually, URL-backed documents have been automatically restored already
-       (the copyURL would be set), but just in case... */
-    else if ([restoreInfo objectForKey:RestoreFileURL] != nil && self.xManPageURL == nil)
+       (the xManPageURL would be set), but just in case... */
+    else if (restoreInfo[MORestoreFileURLKey] != nil && self.xManPageURL == nil)
     {
-        NSURL *url = [restoreInfo objectForKey:RestoreFileURL];
-        NSString *type  = [restoreInfo objectForKey:RestoreFileType];
-        [self readFromURL:url ofType:type error:NULL];
+        restored = [self readFromURL:restoreInfo[MORestoreFileURLKey] ofType:restoreInfo[MORestoreFileTypeKey] error:NULL];
+    }
+    else
+    {
+        restored = (self.xManPageURL != nil);
+    }
+
+    if (!restored)
+    {
+        /* Nothing usable was saved (missing or invalid state, state saved by a
+           build that restored blank windows, or a file that no longer exists).
+           Don't leave an empty, untitled "No manual entry" window behind;
+           close it once restoration finishes. */
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self close];
+        });
+        return;
     }
 
     [[self windowControllers] makeObjectsPerformSelector:@selector(synchronizeWindowTitleWithDocumentName)];

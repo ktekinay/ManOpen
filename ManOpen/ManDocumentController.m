@@ -152,6 +152,13 @@ static CFDataRef MessagePortCallback(CFMessagePortRef port, SInt32 messageID, CF
  * By default, NSApplication will want to open an untitled document at
  * startup and when no windows are open. Check our preferences.
  */
+/* Restorable state is decoded with secure coding on every supported macOS version
+   (the macOS 14 SDK turns it on automatically, but only on macOS 14 and later). */
+- (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app
+{
+    return YES;
+}
+
 - (BOOL)applicationShouldOpenUntitledFile:(NSApplication *)sender
 {
     if (startedUp)

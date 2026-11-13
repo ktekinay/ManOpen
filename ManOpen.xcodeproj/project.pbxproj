@@ -64,6 +64,10 @@
 		A69BAA34E52DA24A2F1A64FB /* MOCommandEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5F638874F304815D83272 /* MOCommandEnvironment.m */; };
 		F96C8F8580933B5FDB22788D /* MOCommandEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5F638874F304815D83272 /* MOCommandEnvironment.m */; };
 		BBDFAEA100FE0F99D2014A1D /* MOCommandEnvironmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11845DB2821D6DC7EE22ADF0 /* MOCommandEnvironmentTests.m */; };
+		3E1A9A76BF9BFB3E3ED75BC5 /* MORestorationState.h in Headers */ = {isa = PBXBuildFile; fileRef = 10F41275B1F36B469BAA18E0 /* MORestorationState.h */; };
+		73A9ED7B75610D2B98E6821A /* MORestorationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 519FADB419CD97C84582565C /* MORestorationState.m */; };
+		4B2DFD355DF1D194C99AE186 /* MORestorationState.m in Sources */ = {isa = PBXBuildFile; fileRef = 519FADB419CD97C84582565C /* MORestorationState.m */; };
+		B1864DD79C64A2575FD875A3 /* MORestorationStateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9B502E799831E4B50E7D20 /* MORestorationStateTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +170,9 @@
 		3BC5F638874F304815D83272 /* MOCommandEnvironment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOCommandEnvironment.m; sourceTree = "<group>"; };
 		11845DB2821D6DC7EE22ADF0 /* MOCommandEnvironmentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOCommandEnvironmentTests.m; sourceTree = "<group>"; };
 		00C69CDC37413E6A3AFEC6D9 /* ManOpenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManOpenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		10F41275B1F36B469BAA18E0 /* MORestorationState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MORestorationState.h; sourceTree = "<group>"; };
+		519FADB419CD97C84582565C /* MORestorationState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MORestorationState.m; sourceTree = "<group>"; };
+		FB9B502E799831E4B50E7D20 /* MORestorationStateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MORestorationStateTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +286,7 @@
 		D39278F10821FFA400376676 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				519FADB419CD97C84582565C /* MORestorationState.m */,
 				D39278F20821FFA400376676 /* AproposDocument.m */,
 				D39278F60821FFA400376676 /* ManDocument.m */,
 				D39278F80821FFA400376676 /* ManDocumentController.m */,
@@ -293,6 +301,7 @@
 		D39278FE0821FFA400376676 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				10F41275B1F36B469BAA18E0 /* MORestorationState.h */,
 				D39278FF0821FFA400376676 /* AproposDocument.h */,
 				D39279030821FFA400376676 /* ManDocument.h */,
 				D39279050821FFA400376676 /* ManDocumentController.h */,
@@ -453,6 +462,7 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				FB9B502E799831E4B50E7D20 /* MORestorationStateTests.m */,
 				11845DB2821D6DC7EE22ADF0 /* MOCommandEnvironmentTests.m */,
 			);
 			path = ManOpenTests;
@@ -465,6 +475,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E1A9A76BF9BFB3E3ED75BC5 /* MORestorationState.h in Headers */,
 				D38A240314E4C3FE00F6AFFE /* AproposDocument.h in Headers */,
 				D38A240514E4C3FE00F6AFFE /* ManDocument.h in Headers */,
 				D38A240614E4C3FE00F6AFFE /* ManDocumentController.h in Headers */,
@@ -659,6 +670,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73A9ED7B75610D2B98E6821A /* MORestorationState.m in Sources */,
 				D38A241B14E4C3FE00F6AFFE /* AproposDocument.m in Sources */,
 				D38A241D14E4C3FE00F6AFFE /* ManDocument.m in Sources */,
 				E0F6EC4D25E5C7EF0042529C /* ManWindowController.m in Sources */,
@@ -698,6 +710,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1864DD79C64A2575FD875A3 /* MORestorationStateTests.m in Sources */,
+				4B2DFD355DF1D194C99AE186 /* MORestorationState.m in Sources */,
 				F96C8F8580933B5FDB22788D /* MOCommandEnvironment.m in Sources */,
 				BBDFAEA100FE0F99D2014A1D /* MOCommandEnvironmentTests.m in Sources */,
 			);
