@@ -51,6 +51,12 @@ xcodebuild -project ManOpen.xcodeproj -scheme "ManOpen (Aggregate)" \
 
 Building for the generic "Any Mac" destination (as above, or with Product ▸ Archive) produces a universal build for Apple silicon and Intel Macs. Building for "My Mac" builds only for your Mac's architecture.
 
+To run the unit tests, use the **ManOpen** scheme (Product ▸ Test in Xcode), or:
+
+```sh
+xcodebuild -project ManOpen.xcodeproj -scheme ManOpen test
+```
+
 Code-signing settings are in `Config/Base.xcconfig`. To sign with your own identity, copy `Config/Local.xcconfig.example` to `Config/Local.xcconfig` and uncomment one of the options in it. Git ignores `Local.xcconfig`. Don't change signing in Xcode's Signing & Capabilities pane, because that edits the shared project file.
 
 ### Version History
@@ -62,6 +68,7 @@ Version 3.1:
 - You can now build and sign ManOpen with your own developer identity without editing the project file. See "Building" above.
 - Removed obsolete build phases and settings left over from older versions of Xcode.
 - Fixed man pages, searches, and File ▸ List Pages coming up empty when ManOpen was opened from Terminal (directly, with `open`, or by `openman`) and the shell's `PAGER` or `MANPAGER` was set to an interactive pager.
+- Added unit tests. See "Building" above.
 
 Version 3.0:
 

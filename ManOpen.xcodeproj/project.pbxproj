@@ -62,6 +62,8 @@
 		E0F6EC4D25E5C7EF0042529C /* ManWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F6EC4B25E5C7EF0042529C /* ManWindowController.m */; };
 		08A1550B02D40954AAA08D9D /* MOCommandEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = FF3A6394C0E7A7157E5C6339 /* MOCommandEnvironment.h */; };
 		A69BAA34E52DA24A2F1A64FB /* MOCommandEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5F638874F304815D83272 /* MOCommandEnvironment.m */; };
+		F96C8F8580933B5FDB22788D /* MOCommandEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5F638874F304815D83272 /* MOCommandEnvironment.m */; };
+		BBDFAEA100FE0F99D2014A1D /* MOCommandEnvironmentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11845DB2821D6DC7EE22ADF0 /* MOCommandEnvironmentTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +164,8 @@
 		FC3FF8B4C63BAD8D3E071E15 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		FF3A6394C0E7A7157E5C6339 /* MOCommandEnvironment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOCommandEnvironment.h; sourceTree = "<group>"; };
 		3BC5F638874F304815D83272 /* MOCommandEnvironment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOCommandEnvironment.m; sourceTree = "<group>"; };
+		11845DB2821D6DC7EE22ADF0 /* MOCommandEnvironmentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOCommandEnvironmentTests.m; sourceTree = "<group>"; };
+		00C69CDC37413E6A3AFEC6D9 /* ManOpenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManOpenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +202,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8F38FBC8909453840FD77110 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -215,6 +226,7 @@
 				6A20BBC9A1983B48226F4E6F /* Config */,
 				D39278E00821FFA400376676 /* Supporting Files */,
 				D39278E40821FFA400376676 /* Subprojects */,
+				D78A144A51F330F4AF763E91 /* ManOpenTests */,
 				D39279800821FFA400376676 /* External Frameworks and Libraries */,
 				D39278ED0821FFA400376676 /* Products */,
 			);
@@ -259,6 +271,7 @@
 				D38A243814E4C3FE00F6AFFE /* cat2rtf */,
 				D38A244414E4C3FE00F6AFFE /* cat2html */,
 				D38A245114E4C3FE00F6AFFE /* openman */,
+				00C69CDC37413E6A3AFEC6D9 /* ManOpenTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -437,6 +450,14 @@
 			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
 		};
+		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
+			isa = PBXGroup;
+			children = (
+				11845DB2821D6DC7EE22ADF0 /* MOCommandEnvironmentTests.m */,
+			);
+			path = ManOpenTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -553,6 +574,22 @@
 			productReference = D38A245114E4C3FE00F6AFFE /* openman */;
 			productType = "com.apple.product-type.tool";
 		};
+		4EF3C839091290E76FFCC300 /* ManOpenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B90720D78A9EF1879736C11C /* Build configuration list for PBXNativeTarget "ManOpenTests" */;
+			buildPhases = (
+				89832A4C6C988D9817A4EF61 /* Sources */,
+				8F38FBC8909453840FD77110 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ManOpenTests;
+			productName = ManOpenTests;
+			productReference = 00C69CDC37413E6A3AFEC6D9 /* ManOpenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -588,6 +625,7 @@
 				D38A242F14E4C3FE00F6AFFE /* cat2rtf (Tool) */,
 				D38A243A14E4C3FE00F6AFFE /* cat2html (Tool) */,
 				D38A244614E4C3FE00F6AFFE /* openman (Tool) */,
+				4EF3C839091290E76FFCC300 /* ManOpenTests */,
 			);
 		};
 /* End PBXProject section */
@@ -653,6 +691,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D38A244914E4C3FE00F6AFFE /* openman.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89832A4C6C988D9817A4EF61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F96C8F8580933B5FDB22788D /* MOCommandEnvironment.m in Sources */,
+				BBDFAEA100FE0F99D2014A1D /* MOCommandEnvironmentTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1069,6 +1116,30 @@
 			};
 			name = Release;
 		};
+		195367583954BC0386191DDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.clindberg.ManOpenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ManOpen";
+			};
+			name = Debug;
+		};
+		CB8EF3A9B4556FACDFFA222B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.clindberg.ManOpenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ManOpen";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1122,6 +1193,15 @@
 			buildConfigurations = (
 				D38A244F14E4C3FE00F6AFFE /* Debug */,
 				D38A245014E4C3FE00F6AFFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B90720D78A9EF1879736C11C /* Build configuration list for PBXNativeTarget "ManOpenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				195367583954BC0386191DDE /* Debug */,
+				CB8EF3A9B4556FACDFFA222B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
