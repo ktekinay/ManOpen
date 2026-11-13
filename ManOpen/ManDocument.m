@@ -327,7 +327,8 @@
 {
     ManWindowController *manWC = self.windowControllers.firstObject;
     ManTextView *textView = manWC.textView;
-    NSURL *fileURL = self.restoreData[MORestoreFileURLKey];
+    id savedURL = self.restoreData[MORestoreFileURLKey]; // restoreData holds an NSURL here, despite its declared type
+    NSURL *fileURL = [savedURL isKindOfClass:[NSURL class]] ? savedURL : nil;
     NSString *fileType = self.restoreData[MORestoreFileTypeKey];
 
     if (fileURL == nil && self.sourceCommand == nil)

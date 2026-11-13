@@ -21,8 +21,6 @@
 - (void)windowDidLoad
 {
     NSString *sizeString = [[NSUserDefaults standardUserDefaults] stringForKey:@"ManWindowSize"];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
     [super windowDidLoad];
 
     self.textView.editable = NO;
