@@ -71,6 +71,9 @@ Version 3.1:
 - Fixed windows reopened at launch (with "Close windows when quitting an app" off, or "Save windows on quit" on) coming back blank, with no title and "No manual entry". Windows that can't be restored, such as a file that has since been deleted, are no longer reopened.
 - Fixed C library pages (sections 2 and 3, such as `printf(3)`) not being found, and missing from Apropos results. On current macOS these pages are installed only with Xcode or the Command Line Tools; ManOpen now searches man's default locations after the folders listed in Preferences.
 - Fixed File ▸ List Pages ▸ 1–9 finding nothing, and ▸ n listing pages from every section. List Pages windows are now titled after the menu item, for example "Section 3 - Library Calls".
+- Apropos and List Pages windows: the Name column always comes first; drag the divider to resize it, and Description fills the rest of the window. Click a column header to sort by it. The Name width and sort are remembered and apply to all open Apropos windows at once. Double-click anywhere on a row to open the page. Resting the pointer on text that's cut off shows all of it.
+- Apropos and List Pages windows open much faster, especially File ▸ List Pages ▸ All Pages.
+- Printing an Apropos or List Pages window now prints wrapped, readable columns with the column headings and page numbers on every page, and is much faster.
 - Added unit tests. See "Building" above.
 
 Version 3.0:

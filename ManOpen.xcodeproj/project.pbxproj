@@ -76,6 +76,14 @@
 		CC46EDE0AC5CAF9F9702DEA5 /* MOSectionListing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB1EC04053851CE309E5F5 /* MOSectionListing.m */; };
 		8E68E2BDFAF2BB531992D1A4 /* MOSectionListing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB1EC04053851CE309E5F5 /* MOSectionListing.m */; };
 		B96107F2B31C3415E588F849 /* MOSectionListingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 972205D975FD878CE86DA0FF /* MOSectionListingTests.m */; };
+		13C43D7F2A8915203343D9BF /* MOAproposTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DECB2B7FC7DD0A9C507E532 /* MOAproposTable.h */; };
+		1D25D7FC4EF9DC82EC736DEE /* MOAproposTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7469BC2C1925C490DA46F /* MOAproposTable.m */; };
+		A2EEF20C0D48DB3E98588ADC /* MOAproposTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7469BC2C1925C490DA46F /* MOAproposTable.m */; };
+		61B0D20C72A0A319F47326EA /* MOAproposTableTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 133DC4E9C0EDCED5E7197B9B /* MOAproposTableTests.m */; };
+		F591B354DFEC08DA29EFF578 /* MOAproposPrinting.h in Headers */ = {isa = PBXBuildFile; fileRef = B012EFFBE1E385B4CB8BFD02 /* MOAproposPrinting.h */; };
+		FF7C2DBAC692C73B5E877C59 /* MOAproposPrinting.m in Sources */ = {isa = PBXBuildFile; fileRef = D3531D0F8A98257FA176FD33 /* MOAproposPrinting.m */; };
+		FA988E6A3EF265E161B6FF86 /* MOAproposPrinting.m in Sources */ = {isa = PBXBuildFile; fileRef = D3531D0F8A98257FA176FD33 /* MOAproposPrinting.m */; };
+		22F782216E476E304BC97BBF /* MOAproposPrintingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 298D0D9926C8259C3A12C470 /* MOAproposPrintingTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +195,12 @@
 		12AD01DD5F2E62A29AE6D921 /* MOSectionListing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOSectionListing.h; sourceTree = "<group>"; };
 		3DAB1EC04053851CE309E5F5 /* MOSectionListing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOSectionListing.m; sourceTree = "<group>"; };
 		972205D975FD878CE86DA0FF /* MOSectionListingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOSectionListingTests.m; sourceTree = "<group>"; };
+		4DECB2B7FC7DD0A9C507E532 /* MOAproposTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOAproposTable.h; sourceTree = "<group>"; };
+		8DD7469BC2C1925C490DA46F /* MOAproposTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAproposTable.m; sourceTree = "<group>"; };
+		133DC4E9C0EDCED5E7197B9B /* MOAproposTableTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAproposTableTests.m; sourceTree = "<group>"; };
+		B012EFFBE1E385B4CB8BFD02 /* MOAproposPrinting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOAproposPrinting.h; sourceTree = "<group>"; };
+		D3531D0F8A98257FA176FD33 /* MOAproposPrinting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAproposPrinting.m; sourceTree = "<group>"; };
+		298D0D9926C8259C3A12C470 /* MOAproposPrintingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAproposPrintingTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +314,8 @@
 		D39278F10821FFA400376676 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D3531D0F8A98257FA176FD33 /* MOAproposPrinting.m */,
+				8DD7469BC2C1925C490DA46F /* MOAproposTable.m */,
 				3DAB1EC04053851CE309E5F5 /* MOSectionListing.m */,
 				5D271CECEF007A8F32D3A3B4 /* MOManPath.m */,
 				519FADB419CD97C84582565C /* MORestorationState.m */,
@@ -317,6 +333,8 @@
 		D39278FE0821FFA400376676 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				B012EFFBE1E385B4CB8BFD02 /* MOAproposPrinting.h */,
+				4DECB2B7FC7DD0A9C507E532 /* MOAproposTable.h */,
 				12AD01DD5F2E62A29AE6D921 /* MOSectionListing.h */,
 				C4BD2014729EC5BA12AE0E8D /* MOManPath.h */,
 				10F41275B1F36B469BAA18E0 /* MORestorationState.h */,
@@ -480,6 +498,8 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				298D0D9926C8259C3A12C470 /* MOAproposPrintingTests.m */,
+				133DC4E9C0EDCED5E7197B9B /* MOAproposTableTests.m */,
 				972205D975FD878CE86DA0FF /* MOSectionListingTests.m */,
 				C93A8493546C3390CC59F4D2 /* MOManPathTests.m */,
 				FB9B502E799831E4B50E7D20 /* MORestorationStateTests.m */,
@@ -495,6 +515,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F591B354DFEC08DA29EFF578 /* MOAproposPrinting.h in Headers */,
+				13C43D7F2A8915203343D9BF /* MOAproposTable.h in Headers */,
 				F6AA7257DF12F475B764DF3D /* MOSectionListing.h in Headers */,
 				8BC829748D4EF6159D355E83 /* MOManPath.h in Headers */,
 				3E1A9A76BF9BFB3E3ED75BC5 /* MORestorationState.h in Headers */,
@@ -692,6 +714,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF7C2DBAC692C73B5E877C59 /* MOAproposPrinting.m in Sources */,
+				1D25D7FC4EF9DC82EC736DEE /* MOAproposTable.m in Sources */,
 				CC46EDE0AC5CAF9F9702DEA5 /* MOSectionListing.m in Sources */,
 				570D8C38B285FB0D181F47E0 /* MOManPath.m in Sources */,
 				73A9ED7B75610D2B98E6821A /* MORestorationState.m in Sources */,
@@ -734,6 +758,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22F782216E476E304BC97BBF /* MOAproposPrintingTests.m in Sources */,
+				FA988E6A3EF265E161B6FF86 /* MOAproposPrinting.m in Sources */,
+				61B0D20C72A0A319F47326EA /* MOAproposTableTests.m in Sources */,
+				A2EEF20C0D48DB3E98588ADC /* MOAproposTable.m in Sources */,
 				B96107F2B31C3415E588F849 /* MOSectionListingTests.m in Sources */,
 				8E68E2BDFAF2BB531992D1A4 /* MOSectionListing.m in Sources */,
 				A3002F7BE198C0A507225770 /* MOManPathTests.m in Sources */,

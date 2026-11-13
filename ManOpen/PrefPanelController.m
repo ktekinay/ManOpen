@@ -150,6 +150,7 @@ FOUNDATION_STATIC_INLINE NSData *DATA_FOR_COLOR(NSColor *color)
                 linkColor,      @"ManLinkColor",
                 bgColor,        @"ManBackgroundColor",
                 @YES,           @"NSQuitAlwaysKeepsWindows", // NO will disable by default
+                @750,           @"NSInitialToolTipDelay", // ms; e.g. the full text of a truncated Apropos cell
                 nil];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
