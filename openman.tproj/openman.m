@@ -102,11 +102,12 @@ static CFMessagePortRef CreateManOpenPort(double seconds)
 {
     CFMessagePortRef port = NULL;
 
-    for (double waited = 0.0; port == NULL && waited <= seconds; waited += 0.25)
+    // Check often: ManOpen waits only briefly before showing its Title panel at launch.
+    for (double waited = 0.0; port == NULL && waited <= seconds; waited += 0.05)
     {
         port = CFMessagePortCreateRemote(NULL, ManOpenPortName);
         if (port == NULL)
-            usleep(250000);
+            usleep(50000);
     }
     return port;
 }

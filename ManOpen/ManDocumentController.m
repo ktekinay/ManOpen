@@ -5,6 +5,7 @@
 #import "AproposDocument.h"
 #import "NSData+Utils.h"
 #import "MOCommandEnvironment.h"
+#import "MOReopenPolicy.h"
 #import "MOSectionListing.h"
 #import "PrefPanelController.h"
 
@@ -170,13 +171,86 @@ static CFDataRef MessagePortCallback(CFMessagePortRef port, SInt32 messageID, CF
 - (BOOL)applicationOpenUntitledFile:(NSApplication *)sender
 {
     if ([self applicationShouldOpenUntitledFile:sender]) {
-        if (![openTextPanel isVisible])
-            [openSectionPopup selectItemAtIndex:0];
-        [openTextField selectText:self];
-        [openTextPanel performSelector:@selector(makeKeyAndOrderFront:) withObject:self afterDelay:0.0];
+        // Wait briefly: a page requested while ManOpen is being brought forward or
+        // launched (openman, a link, Services, Finder) arrives in the meantime and
+        // the Title panel isn't needed. One pending check at a time.
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(openTitlePanelIfStillNoWindows) object:nil];
+        [self performSelector:@selector(openTitlePanelIfStillNoWindows) withObject:nil
+                   afterDelay:startedUp ? MOTitlePanelReopenDelay : MOTitlePanelLaunchDelay];
         return YES;
     }
     return NO;
+}
+
+- (void)openTitlePanelIfStillNoWindows
+{
+    // Only if ManOpen is still the active app and still has no windows.
+    if (!MOShouldOpenDelayedTitlePanel(NSApp.isActive, [self windowStatesForWindows:[self windowsFrontToBack]]))
+        return;
+
+    if (![openTextPanel isVisible])
+        [openSectionPopup selectItemAtIndex:0];
+    [openTextField selectText:self];
+    [openTextPanel makeKeyAndOrderFront:self];
+}
+
+/* All of the app's windows, front to back, with ordered-out and minimized ones last. */
+- (NSArray<NSWindow *> *)windowsFrontToBack
+{
+    NSMutableArray<NSWindow *> *windows = [NSApp.orderedWindows mutableCopy];
+
+    for (NSWindow *window in NSApp.windows)
+    {
+        if ([windows indexOfObjectIdenticalTo:window] == NSNotFound)
+            [windows addObject:window];
+    }
+    return windows;
+}
+
+- (NSArray<MOWindowState *> *)windowStatesForWindows:(NSArray<NSWindow *> *)windows
+{
+    NSMutableArray<MOWindowState *> *states = [NSMutableArray arrayWithCapacity:windows.count];
+
+    for (NSWindow *window in windows)
+    {
+        MOWindowKind kind = MOWindowKindOther;
+
+        if (window.isSheet)
+            kind = MOWindowKindOther; // its parent window is what counts
+        else if ([window.windowController document] != nil)
+            kind = MOWindowKindDocument;
+        else if (window == openTextPanel || window == aproposPanel || window == helpPanel ||
+                 [window.windowController isKindOfClass:[PrefPanelController class]])
+            kind = MOWindowKindPanel;
+
+        [states addObject:[MOWindowState windowOfKind:kind visible:window.isVisible minimized:window.isMiniaturized]];
+    }
+    return states;
+}
+
+/*
+ * A Dock click, or another app bringing ManOpen forward. AppKit's own check
+ * ignores panels such as Preferences, so decide here which ManOpen window, if
+ * any, to show (Plans 1a.7). With no windows, AppKit goes on to
+ * applicationOpenUntitledFile:, which may open the Title panel.
+ */
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)hasVisibleWindows
+{
+    NSArray<NSWindow *> *windows = [self windowsFrontToBack];
+    MOReopenDecision decision = MODecideReopen([self windowStatesForWindows:windows]);
+
+    switch (decision.action)
+    {
+        case MOReopenActionBringForward:
+            [windows[decision.windowIndex] makeKeyAndOrderFront:self];
+            return NO;
+        case MOReopenActionRestoreMinimized:
+            [windows[decision.windowIndex] deminiaturize:self];
+            return NO;
+        case MOReopenActionNoWindows:
+            return YES;
+    }
+    return YES;
 }
 
 - (void)removeDocument:(NSDocument *)document
