@@ -72,6 +72,10 @@
 		570D8C38B285FB0D181F47E0 /* MOManPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D271CECEF007A8F32D3A3B4 /* MOManPath.m */; };
 		0A9927863A5BFEAFDFB047D6 /* MOManPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D271CECEF007A8F32D3A3B4 /* MOManPath.m */; };
 		A3002F7BE198C0A507225770 /* MOManPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C93A8493546C3390CC59F4D2 /* MOManPathTests.m */; };
+		F6AA7257DF12F475B764DF3D /* MOSectionListing.h in Headers */ = {isa = PBXBuildFile; fileRef = 12AD01DD5F2E62A29AE6D921 /* MOSectionListing.h */; };
+		CC46EDE0AC5CAF9F9702DEA5 /* MOSectionListing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB1EC04053851CE309E5F5 /* MOSectionListing.m */; };
+		8E68E2BDFAF2BB531992D1A4 /* MOSectionListing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DAB1EC04053851CE309E5F5 /* MOSectionListing.m */; };
+		B96107F2B31C3415E588F849 /* MOSectionListingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 972205D975FD878CE86DA0FF /* MOSectionListingTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,6 +184,9 @@
 		C4BD2014729EC5BA12AE0E8D /* MOManPath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOManPath.h; sourceTree = "<group>"; };
 		5D271CECEF007A8F32D3A3B4 /* MOManPath.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOManPath.m; sourceTree = "<group>"; };
 		C93A8493546C3390CC59F4D2 /* MOManPathTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOManPathTests.m; sourceTree = "<group>"; };
+		12AD01DD5F2E62A29AE6D921 /* MOSectionListing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOSectionListing.h; sourceTree = "<group>"; };
+		3DAB1EC04053851CE309E5F5 /* MOSectionListing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOSectionListing.m; sourceTree = "<group>"; };
+		972205D975FD878CE86DA0FF /* MOSectionListingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOSectionListingTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -293,6 +300,7 @@
 		D39278F10821FFA400376676 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3DAB1EC04053851CE309E5F5 /* MOSectionListing.m */,
 				5D271CECEF007A8F32D3A3B4 /* MOManPath.m */,
 				519FADB419CD97C84582565C /* MORestorationState.m */,
 				D39278F20821FFA400376676 /* AproposDocument.m */,
@@ -309,6 +317,7 @@
 		D39278FE0821FFA400376676 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				12AD01DD5F2E62A29AE6D921 /* MOSectionListing.h */,
 				C4BD2014729EC5BA12AE0E8D /* MOManPath.h */,
 				10F41275B1F36B469BAA18E0 /* MORestorationState.h */,
 				D39278FF0821FFA400376676 /* AproposDocument.h */,
@@ -471,6 +480,7 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				972205D975FD878CE86DA0FF /* MOSectionListingTests.m */,
 				C93A8493546C3390CC59F4D2 /* MOManPathTests.m */,
 				FB9B502E799831E4B50E7D20 /* MORestorationStateTests.m */,
 				11845DB2821D6DC7EE22ADF0 /* MOCommandEnvironmentTests.m */,
@@ -485,6 +495,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6AA7257DF12F475B764DF3D /* MOSectionListing.h in Headers */,
 				8BC829748D4EF6159D355E83 /* MOManPath.h in Headers */,
 				3E1A9A76BF9BFB3E3ED75BC5 /* MORestorationState.h in Headers */,
 				D38A240314E4C3FE00F6AFFE /* AproposDocument.h in Headers */,
@@ -681,6 +692,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC46EDE0AC5CAF9F9702DEA5 /* MOSectionListing.m in Sources */,
 				570D8C38B285FB0D181F47E0 /* MOManPath.m in Sources */,
 				73A9ED7B75610D2B98E6821A /* MORestorationState.m in Sources */,
 				D38A241B14E4C3FE00F6AFFE /* AproposDocument.m in Sources */,
@@ -722,6 +734,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B96107F2B31C3415E588F849 /* MOSectionListingTests.m in Sources */,
+				8E68E2BDFAF2BB531992D1A4 /* MOSectionListing.m in Sources */,
 				A3002F7BE198C0A507225770 /* MOManPathTests.m in Sources */,
 				0A9927863A5BFEAFDFB047D6 /* MOManPath.m in Sources */,
 				B1864DD79C64A2575FD875A3 /* MORestorationStateTests.m in Sources */,

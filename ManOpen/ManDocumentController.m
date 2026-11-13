@@ -5,6 +5,7 @@
 #import "AproposDocument.h"
 #import "NSData+Utils.h"
 #import "MOCommandEnvironment.h"
+#import "MOSectionListing.h"
 #import "PrefPanelController.h"
 
 
@@ -433,8 +434,12 @@ static CFDataRef MessagePortCallback(CFMessagePortRef port, SInt32 messageID, CF
 
 - (id)openAproposDocument:(NSString *)apropos manPath:(NSString *)manPath
 {
+    return [self openAproposDocument:apropos manPath:manPath title:[NSString stringWithFormat:@"Apropos %@", apropos]];
+}
+
+- (id)openAproposDocument:(NSString *)apropos manPath:(NSString *)manPath title:(NSString *)title
+{
     AproposDocument *document;
-    NSString *title = [NSString stringWithFormat:@"Apropos %@", apropos];
 
     if ((document = [self documentForTitle:title]) == nil)
     {
@@ -618,12 +623,12 @@ static BOOL IsSectionWord(NSString *word)
 
 - (IBAction)openSection:(id)sender
 {
-    if ([sender tag] == 0)
-        [self openApropos:@""]; // all pages
-    else if ([sender tag] == 20)
-        [self openApropos:@"(n)"];
-    else
-        [self openApropos:[NSString stringWithFormat:@"(%lu", [sender tag]]];
+    NSInteger tag = [sender tag];
+    NSString *title = MOSectionListingTitle(tag, [sender title]);
+
+    [self openAproposDocument:MOSectionListingQuery(tag)
+                      manPath:[[NSUserDefaults standardUserDefaults] manPath]
+                        title:title];
 }
 
 - (BOOL)useModalPanels
