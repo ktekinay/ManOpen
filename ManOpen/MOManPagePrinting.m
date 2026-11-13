@@ -20,6 +20,16 @@ NSTextView *MOMakeManPagePrintView(Class viewClass, NSTextView *screenView)
     // Print in the default colors, whatever the user chose (resolved light below).
     [storage addAttribute:NSForegroundColorAttributeName value:[NSColor textColor] range:NSMakeRange(0, storage.length)];
     linkAttributes[NSForegroundColorAttributeName] = [NSColor linkColor];
+
+    // A text view applies linkTextAttributes only when drawing to the screen, so
+    // links would print in the text color; write the link style into the text.
+    NSMutableDictionary *printedLinkAttributes = [linkAttributes mutableCopy];
+    [printedLinkAttributes removeObjectForKey:NSCursorAttributeName];
+    [storage enumerateAttribute:NSLinkAttributeName inRange:NSMakeRange(0, storage.length) options:0
+                     usingBlock:^(id link, NSRange range, BOOL *stop) {
+        if (link != nil)
+            [storage addAttributes:printedLinkAttributes range:range];
+    }];
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     NSTextContainer *container = [[NSTextContainer alloc] initWithSize:NSMakeSize(width - 2.0 * inset.width, CGFLOAT_MAX)];
 
