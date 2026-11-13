@@ -40,9 +40,9 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="10">
-                        <rect key="frame" x="147" y="64" width="217" height="21"/>
+                        <rect key="frame" x="147" y="64" width="217" height="24"/>
                         <textFieldCell key="cell" selectable="YES" editable="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="63">
-                            <font key="font" size="12" name="Helvetica"/>
+                            <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -133,9 +133,9 @@ Gw
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="6">
-                        <rect key="frame" x="133" y="91" width="231" height="22"/>
+                        <rect key="frame" x="133" y="89" width="231" height="26"/>
                         <textFieldCell key="cell" selectable="YES" editable="YES" state="on" borderStyle="bezel" alignment="left" drawsBackground="YES" id="75">
-                            <font key="font" size="12" name="Helvetica"/>
+                            <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>

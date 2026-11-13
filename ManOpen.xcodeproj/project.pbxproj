@@ -101,6 +101,7 @@
 		615CE599F567659ADCC0DA53 /* MOReopenPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = E023F1F1328FFFA90CF12A5B /* MOReopenPolicy.m */; };
 		0E87AAE3B5A56D16D798D8C7 /* MOReopenPolicy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D0F339B163A77B2FD309D7C /* MOReopenPolicy.h */; };
 		CB3A352A185B75074D8D876B /* MOReopenPolicyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82787DAE1A69300F8A5D71C5 /* MOReopenPolicyTests.m */; };
+		3650B88B0668799DD3B4E683 /* MOPanelFontTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B298B5D1CB92665E874E730 /* MOPanelFontTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -250,6 +251,7 @@
 		E023F1F1328FFFA90CF12A5B /* MOReopenPolicy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOReopenPolicy.m; sourceTree = "<group>"; };
 		8D0F339B163A77B2FD309D7C /* MOReopenPolicy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOReopenPolicy.h; sourceTree = "<group>"; };
 		82787DAE1A69300F8A5D71C5 /* MOReopenPolicyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOReopenPolicyTests.m; sourceTree = "<group>"; };
+		5B298B5D1CB92665E874E730 /* MOPanelFontTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOPanelFontTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -555,6 +557,7 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				5B298B5D1CB92665E874E730 /* MOPanelFontTests.m */,
 				82787DAE1A69300F8A5D71C5 /* MOReopenPolicyTests.m */,
 				5F398270F0FE3E20210CEA51 /* MOManPagePrintingTests.m */,
 				59DDB8091506510BD4D064E7 /* MOColorDefaultsTests.m */,
@@ -829,6 +832,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3650B88B0668799DD3B4E683 /* MOPanelFontTests.m in Sources */,
 				CB3A352A185B75074D8D876B /* MOReopenPolicyTests.m in Sources */,
 				615CE599F567659ADCC0DA53 /* MOReopenPolicy.m in Sources */,
 				C4767498487B328D83D57CAC /* MOManPagePrintingTests.m in Sources */,
