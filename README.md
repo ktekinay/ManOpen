@@ -55,6 +55,13 @@ Code-signing settings are in `Config/Base.xcconfig`. To sign with your own ident
 
 ### Version History
 
+Version 3.1:
+
+- ManOpen now requires macOS 12 ("Monterey") or later.
+- The `openman` command-line tool now uses the hardened runtime too, so every executable in a release can be notarized.
+- You can now build and sign ManOpen with your own developer identity without editing the project file. See "Building" above.
+- Removed obsolete build phases and settings left over from older versions of Xcode.
+
 Version 3.0:
 
 - ManOpen now runs natively on Apple Silicon Macs, and requires macOS 10.9 or later. Support for older Macs has been discontinued.
