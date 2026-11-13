@@ -3,6 +3,7 @@
 #import "PrefPanelController.h"
 #import <AppKit/AppKit.h>
 #import "ManDocumentController.h"
+#import "MOManPath.h"
 
 FOUNDATION_STATIC_INLINE NSColor *COLOR_FOR_DATA(NSData *colorData)
 {
@@ -67,7 +68,9 @@ FOUNDATION_STATIC_INLINE NSColor *COLOR_FOR_DATA(NSData *colorData)
 
 - (NSString *)manPath
 {
-    return [[self objectForKey:@"ManPathArray"] componentsJoinedByString:@":"];
+    /* Ends with ":" so man also searches its default path (which includes the SDK's
+       section 2 and 3 pages) after the directories listed in Preferences. */
+    return MOManPathFromDirectories([self arrayForKey:@"ManPathArray"]);
 }
 
 @end
