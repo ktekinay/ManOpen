@@ -15,6 +15,11 @@ NSTextView *MOMakeManPagePrintView(Class viewClass, NSTextView *screenView)
     CGFloat width = NSWidth(screenView.bounds);
     NSSize inset = screenView.textContainerInset;
     NSTextStorage *storage = [[NSTextStorage alloc] initWithAttributedString:screenView.textStorage];
+    NSMutableDictionary *linkAttributes = [screenView.linkTextAttributes mutableCopy] ?: [NSMutableDictionary dictionary];
+
+    // Print in the default colors, whatever the user chose (resolved light below).
+    [storage addAttribute:NSForegroundColorAttributeName value:[NSColor textColor] range:NSMakeRange(0, storage.length)];
+    linkAttributes[NSForegroundColorAttributeName] = [NSColor linkColor];
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     NSTextContainer *container = [[NSTextContainer alloc] initWithSize:NSMakeSize(width - 2.0 * inset.width, CGFLOAT_MAX)];
 
@@ -33,7 +38,7 @@ NSTextView *MOMakeManPagePrintView(Class viewClass, NSTextView *screenView)
     view.editable = NO;
     view.selectable = NO;
     view.textContainerInset = inset;
-    view.linkTextAttributes = screenView.linkTextAttributes;
+    view.linkTextAttributes = linkAttributes;
     view.verticallyResizable = YES;
     view.horizontallyResizable = NO;
     view.maxSize = NSMakeSize(width, CGFLOAT_MAX);

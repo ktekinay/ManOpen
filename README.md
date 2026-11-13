@@ -88,7 +88,7 @@ Version 3.1:
 - The `openman` command-line tool is now included in the app, in `Contents/Helpers`. See "Using ManOpen from Terminal" above.
 - `openman` now works with the right copy of ManOpen: an already running ManOpen, the app it's inside, or the newest installed copy of ManOpen 3.0 or later, never an older 2.x copy. It reports errors and exits with a non-zero status when it can't reach ManOpen.
 - Links now use the system link color by default, so they're readable in Dark Mode and with Increase Contrast. If your link color was still the old default blue, it switches to the new default automatically; colors you chose are kept. A new **Restore Default Colors** button in Preferences ▸ Appearance goes back to the system colors.
-- Printing a man page in Dark Mode now prints dark text on white paper, the same as in Light Mode, and doesn't print the window's background color.
+- Man pages now always print in the standard light colors, dark text and links on white paper, whether ManOpen is in Light or Dark Mode and whatever colors are set in Preferences.
 - Added unit tests. See "Building" above.
 
 Version 3.0:

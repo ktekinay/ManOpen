@@ -17,10 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
  * which draws page numbers) for printing the page shown by `screenView`:
  *   - a copy of its text, laid out at the same width, inset and padding, so
  *     the preformatted lines break exactly as on screen;
- *   - the same link appearance (linkTextAttributes);
- *   - the light (Aqua) appearance, so system colors such as the default text
- *     and link colors print dark on white, while colors the user chose print
- *     as chosen;
+ *   - the same link appearance (linkTextAttributes), except the color;
+ *   - the default text and link colors in the light (Aqua) appearance, dark
+ *     on white, whatever colors the user chose;
  *   - no background, whatever the background color preference;
  *   - TextKit 1 (printing a TextKit 2 view slows down with every page).
  * The view keeps its text alive while printing runs.
