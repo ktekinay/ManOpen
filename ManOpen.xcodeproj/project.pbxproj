@@ -86,6 +86,9 @@
 		0B8ABDE46559091E39F555A1 /* openman in Embed Command-Line Tool */ = {isa = PBXBuildFile; fileRef = D38A245114E4C3FE00F6AFFE /* openman */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FD2496BB7705ACAC2372BCEA /* openman.1 in Embed Command-Line Tool Man Page */ = {isa = PBXBuildFile; fileRef = D392797F0821FFA400376676 /* openman.1 */; };
 		21F195B372A789BE8B004A60 /* MOAppBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 421F6ABBF5B9677458EDFF35 /* MOAppBundleTests.m */; };
+		1A8DDFEC14855AD2745CB85F /* MOAppSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 628C6D01A1B78864C2D93D51 /* MOAppSelection.m */; };
+		9458C235022CD7AFD3030E89 /* MOAppSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 628C6D01A1B78864C2D93D51 /* MOAppSelection.m */; };
+		B3F4A50D15B34B9874651B7E /* MOAppSelectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1AA038E6798138C21BBAA2 /* MOAppSelectionTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -223,6 +226,9 @@
 		D3531D0F8A98257FA176FD33 /* MOAproposPrinting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAproposPrinting.m; sourceTree = "<group>"; };
 		298D0D9926C8259C3A12C470 /* MOAproposPrintingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAproposPrintingTests.m; sourceTree = "<group>"; };
 		421F6ABBF5B9677458EDFF35 /* MOAppBundleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAppBundleTests.m; sourceTree = "<group>"; };
+		50FC99A40D62C6538D4374F6 /* MOAppSelection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOAppSelection.h; sourceTree = "<group>"; };
+		628C6D01A1B78864C2D93D51 /* MOAppSelection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAppSelection.m; sourceTree = "<group>"; };
+		0C1AA038E6798138C21BBAA2 /* MOAppSelectionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAppSelectionTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -496,6 +502,8 @@
 			isa = PBXGroup;
 			children = (
 				D39279770821FFA400376676 /* openman.m */,
+				50FC99A40D62C6538D4374F6 /* MOAppSelection.h */,
+				628C6D01A1B78864C2D93D51 /* MOAppSelection.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -520,6 +528,7 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				0C1AA038E6798138C21BBAA2 /* MOAppSelectionTests.m */,
 				421F6ABBF5B9677458EDFF35 /* MOAppBundleTests.m */,
 				298D0D9926C8259C3A12C470 /* MOAproposPrintingTests.m */,
 				133DC4E9C0EDCED5E7197B9B /* MOAproposTableTests.m */,
@@ -776,6 +785,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D38A244914E4C3FE00F6AFFE /* openman.m in Sources */,
+				1A8DDFEC14855AD2745CB85F /* MOAppSelection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -783,6 +793,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3F4A50D15B34B9874651B7E /* MOAppSelectionTests.m in Sources */,
+				9458C235022CD7AFD3030E89 /* MOAppSelection.m in Sources */,
 				21F195B372A789BE8B004A60 /* MOAppBundleTests.m in Sources */,
 				22F782216E476E304BC97BBF /* MOAproposPrintingTests.m in Sources */,
 				FA988E6A3EF265E161B6FF86 /* MOAproposPrinting.m in Sources */,
@@ -1231,7 +1243,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.clindberg.ManOpenTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ManOpen";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/ManOpen",
+					"$(SRCROOT)/openman.tproj",
+				);
 			};
 			name = Debug;
 		};
@@ -1243,7 +1258,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.clindberg.ManOpenTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ManOpen";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/ManOpen",
+					"$(SRCROOT)/openman.tproj",
+				);
 			};
 			name = Release;
 		};

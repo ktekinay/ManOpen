@@ -86,6 +86,7 @@ Version 3.1:
 - Apropos and List Pages windows open much faster, especially File ▸ List Pages ▸ All Pages.
 - Printing an Apropos or List Pages window now prints wrapped, readable columns with the column headings and page numbers on every page, and is much faster.
 - The `openman` command-line tool is now included in the app, in `Contents/Helpers`. See "Using ManOpen from Terminal" above.
+- `openman` now works with the right copy of ManOpen: an already running ManOpen, the app it's inside, or the newest installed copy of ManOpen 3.0 or later, never an older 2.x copy. It reports errors and exits with a non-zero status when it can't reach ManOpen.
 - Added unit tests. See "Building" above.
 
 Version 3.0:

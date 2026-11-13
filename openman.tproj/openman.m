@@ -1,8 +1,13 @@
 
 #import <Foundation/Foundation.h>
-#import <AppKit/NSWorkspace.h>
-#import <libc.h>  // for getopt()
-#import <ctype.h> // for isdigit()
+#import <AppKit/AppKit.h>
+#import <libc.h>        // for getopt()
+#import <ctype.h>       // for isdigit()
+#import <mach-o/dyld.h> // for _NSGetExecutablePath()
+#import "MOAppSelection.h"
+
+static NSString * const ManOpenBundleIdentifier = @"org.clindberg.ManOpen";
+static CFStringRef const ManOpenPortName = CFSTR("8D98N325TG.org.clindberg.ManOpen.MachIPC");
 
 
 static NSString *MakeNSStringFromPath(const char *filename)
@@ -24,6 +29,88 @@ static NSString *MakeAbsolutePath(const char *filename)
     return currFile;
 }
 
+/* A copy of ManOpen at `url`, or nil if it isn't one. */
+static MOAppCandidate *CandidateForURL(NSURL *url)
+{
+    NSBundle *bundle = (url != nil) ? [NSBundle bundleWithURL:url] : nil;
+
+    if (![bundle.bundleIdentifier isEqualToString:ManOpenBundleIdentifier])
+        return nil;
+    return [MOAppCandidate candidateWithURL:url version:[bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+}
+
+/* The ManOpen this tool is embedded in (Contents/Helpers/openman), following symlinks
+   such as /usr/local/bin/openman to the real file. nil for a standalone copy. */
+static MOAppCandidate *OwnApp(void)
+{
+    char path[PATH_MAX];
+    char resolved[PATH_MAX];
+    uint32_t size = sizeof(path);
+
+    if (_NSGetExecutablePath(path, &size) != 0 || realpath(path, resolved) == NULL)
+        return nil;
+    return CandidateForURL(MOEnclosingAppBundle(MakeNSStringFromPath(resolved)));
+}
+
+/* Every copy of ManOpen that Launch Services knows about, in its order. */
+static NSArray<MOAppCandidate *> *InstalledApps(void)
+{
+    NSArray<NSURL *> *urls = CFBridgingRelease(LSCopyApplicationURLsForBundleIdentifier((__bridge CFStringRef)ManOpenBundleIdentifier, NULL));
+    NSMutableArray<MOAppCandidate *> *apps = [NSMutableArray array];
+
+    for (id url in urls)
+    {
+        MOAppCandidate *candidate = [url isKindOfClass:[NSURL class]] ? CandidateForURL(url) : nil;
+        if (candidate != nil)
+            [apps addObject:candidate];
+    }
+    return apps;
+}
+
+/* Every running copy of ManOpen. */
+static NSArray<MOAppCandidate *> *RunningApps(void)
+{
+    NSMutableArray<MOAppCandidate *> *apps = [NSMutableArray array];
+
+    for (NSRunningApplication *app in [NSRunningApplication runningApplicationsWithBundleIdentifier:ManOpenBundleIdentifier])
+    {
+        MOAppCandidate *candidate = CandidateForURL(app.bundleURL);
+        if (candidate != nil)
+            [apps addObject:candidate];
+    }
+    return apps;
+}
+
+/* Launches the app at `url`, or brings it forward if it's already running. */
+static BOOL OpenApp(NSURL *url, BOOL activate)
+{
+    NSWorkspaceOpenConfiguration *configuration = [NSWorkspaceOpenConfiguration configuration];
+    dispatch_semaphore_t done = dispatch_semaphore_create(0);
+    __block BOOL opened = NO;
+
+    configuration.activates = activate;
+    [[NSWorkspace sharedWorkspace] openApplicationAtURL:url configuration:configuration completionHandler:^(NSRunningApplication *app, NSError *error) {
+        opened = (app != nil);
+        dispatch_semaphore_signal(done);
+    }];
+    dispatch_semaphore_wait(done, dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC));
+    return opened;
+}
+
+/* Waits up to `seconds` for a launched ManOpen to start listening. */
+static CFMessagePortRef ConnectToManOpen(double seconds)
+{
+    CFMessagePortRef port = NULL;
+
+    for (double waited = 0.0; port == NULL && waited <= seconds; waited += 0.25)
+    {
+        port = CFMessagePortCreateRemote(NULL, ManOpenPortName);
+        if (port == NULL)
+            usleep(250000);
+    }
+    return port;
+}
+
 static void usage(const char *progname)
 {
     fprintf(stderr,"%s: [-bk] [-M path] [-f file] [section] [name ...]\n", progname);
@@ -39,15 +126,12 @@ int main (int argc, char * const *argv)
 		BOOL              aproposMode = NO;
 		BOOL              forceToFront = YES;
 		int               argIndex;
-		char              c;
-        int               maxConnectTries = 8;
-        int               connectCount = 0;
-        CFErrorRef        lsError = NULL;
-        NSArray           *manOpenURLs = CFBridgingRelease(LSCopyApplicationURLsForBundleIdentifier(CFSTR("org.clindberg.ManOpen"), &lsError));
+		int               c; // int, not char: getopt() returns -1 at the end
         NSMutableDictionary *distributedDictionary = [[NSMutableDictionary alloc] init];
         NSMutableArray    *namesAndSections = [[NSMutableArray alloc] init];
         CFMessagePortRef  remotePort;
         SInt32            status;
+        NSData            *request;
 		
 		while ((c = getopt(argc,argv,"hbm:M:f:kaCcw")) != EOF)
 		{
@@ -125,63 +209,42 @@ int main (int argc, char * const *argv)
 			}
 		}
 		
-        // Use Launch Services to find ManOpen.
-        if (!manOpenURLs)
+        remotePort = CFMessagePortCreateRemote(NULL, ManOpenPortName);
+        if (remotePort != NULL)
         {
-            fprintf(stderr, "Cannot locate ManOpen.\n");
-            exit(1);
-        }
-        else if (![manOpenURLs.firstObject isKindOfClass:[NSURL class]])
-        {
-            fprintf(stderr, "Received an unknown object type from Launch Services.\n");
-            exit(1);
-        }
-        
-        // Use NSWorkspace to launch ManOpen.
-        if (@available(macOS 10.15, *))
-        {
-            NSWorkspaceOpenConfiguration *configuration = [[NSWorkspaceOpenConfiguration alloc] init];
-            dispatch_semaphore_t launchLock = dispatch_semaphore_create(0);
-            
-            configuration.activates = forceToFront;
-            [[NSWorkspace sharedWorkspace] openApplicationAtURL:manOpenURLs.firstObject configuration:configuration completionHandler:^(NSRunningApplication * _Nullable app, NSError * _Nullable error) {
-                if (!app)
-                {
-                    fprintf(stderr, "Could not launch ManOpen\n");
-                    exit(1);
-                }
-                dispatch_semaphore_signal(launchLock);
-            }];
-            dispatch_semaphore_wait(launchLock, dispatch_time(DISPATCH_TIME_NOW, 10000000000)); // wait until the open event has gone through
+            // A ManOpen that accepts requests is already running: launch nothing.
+            // (Our environment, PAGER included, doesn't matter to it; ManOpen sets its own for man.)
+            if (forceToFront)
+            {
+                NSURL *running = MOChooseManOpenApp(nil, RunningApps(), NSHomeDirectory());
+                if (running != nil)
+                    OpenApp(running, YES); // brings the running copy forward
+            }
         }
         else
         {
-            NSError *launchErr = nil;
-            
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            if (![[NSWorkspace sharedWorkspace] launchApplicationAtURL:manOpenURLs.firstObject options:forceToFront ? 0UL : NSWorkspaceLaunchWithoutActivation configuration:@{} error:&launchErr])
+            // Launch our own app if we're embedded in one, otherwise the best compatible copy.
+            NSURL *appURL = MOChooseManOpenApp(OwnApp(), InstalledApps(), NSHomeDirectory());
+
+            if (appURL == nil)
             {
-                fprintf(stderr, "Could not launch ManOpen\n");
+                fprintf(stderr, "openman: ManOpen %s or later is required, but no copy of it was found.\n", MOMinimumCompatibleVersion.UTF8String);
                 exit(1);
             }
-#pragma clang diagnostic pop
+            if (!OpenApp(appURL, forceToFront))
+            {
+                fprintf(stderr, "openman: could not launch %s\n", appURL.path.fileSystemRepresentation);
+                exit(1);
+            }
+
+            remotePort = ConnectToManOpen(10.0);
+            if (remotePort == NULL)
+            {
+                fprintf(stderr, "openman: could not connect to ManOpen at %s\n", appURL.path.fileSystemRepresentation);
+                exit(1);
+            }
         }
-        
-        // Use a Mach port to open a connection; keep trying until one connects.
-        do
-        {
-            remotePort = CFMessagePortCreateRemote(NULL, CFSTR("8D98N325TG.org.clindberg.ManOpen.MachIPC"));
-            if (!remotePort)
-                sleep(1);
-        } while (remotePort == nil && connectCount++ < maxConnectTries);
-        
-        if (remotePort == nil)
-        {
-            fprintf(stderr,"Could not open connection to ManOpen\n");
-            exit(1);
-        }
-        
+
         if (files.count)
             distributedDictionary[@"Files"] = files;
         
@@ -206,16 +269,14 @@ int main (int argc, char * const *argv)
         distributedDictionary[@"NamesAndSections"] = namesAndSections;
         
         // Once we've got all our data together, send the message to the app. The message ID below is intentional, because I feel like I went mental writing this (it was my third attempt at replacing the original DO code).
-        if (@available(macOS 10.13, *))
+        request = [NSKeyedArchiver archivedDataWithRootObject:distributedDictionary requiringSecureCoding:YES error:NULL];
+        status = (request != nil) ? CFMessagePortSendRequest(remotePort, 5150, (__bridge CFDataRef)request, 10.0, 10.0, NULL, NULL) : kCFMessagePortTransportError;
+        CFRelease(remotePort);
+
+        if (status != kCFMessagePortSuccess)
         {
-            status = CFMessagePortSendRequest(remotePort, 5150, (CFDataRef)[NSKeyedArchiver archivedDataWithRootObject:distributedDictionary requiringSecureCoding:YES error:NULL], 10.0, 10.0, NULL, NULL);
-        }
-        else
-        {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            status = CFMessagePortSendRequest(remotePort, 5150, (CFDataRef)[NSKeyedArchiver archivedDataWithRootObject:distributedDictionary], 10.0, 10.0, NULL, NULL);
-#pragma clang diagnostic pop
+            fprintf(stderr, "openman: could not send the request to ManOpen (error %d)\n", (int)status);
+            exit(1);
         }
 	}
     exit(0);       // insure the process exit status is 0
