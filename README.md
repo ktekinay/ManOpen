@@ -61,6 +61,7 @@ Version 3.1:
 - The `openman` command-line tool now uses the hardened runtime too, so every executable in a release can be notarized.
 - You can now build and sign ManOpen with your own developer identity without editing the project file. See "Building" above.
 - Removed obsolete build phases and settings left over from older versions of Xcode.
+- Fixed man pages, searches, and File ▸ List Pages coming up empty when ManOpen was opened from Terminal (directly, with `open`, or by `openman`) and the shell's `PAGER` or `MANPAGER` was set to an interactive pager.
 
 Version 3.0:
 

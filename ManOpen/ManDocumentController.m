@@ -4,6 +4,7 @@
 #import "ManDocument.h"
 #import "AproposDocument.h"
 #import "NSData+Utils.h"
+#import "MOCommandEnvironment.h"
 #import "PrefPanelController.h"
 
 
@@ -199,11 +200,8 @@ static CFDataRef MessagePortCallback(CFMessagePortRef port, SInt32 messageID, CF
     NSTask *task = [[NSTask alloc] init];
     NSData *output;
     
-    if (extraEnv != nil) {
-        NSMutableDictionary *environment = [[[NSProcessInfo processInfo] environment] mutableCopy];
-        [environment addEntriesFromDictionary:extraEnv];
-        [task setEnvironment:environment];
-    }
+    // Always set the environment, so the user's pager settings never affect the output.
+    [task setEnvironment:MOCommandEnvironment([[NSProcessInfo processInfo] environment], extraEnv)];
 
     [task setLaunchPath:@"/bin/sh"];
     [task setArguments:[NSArray arrayWithObjects:@"-c", command, nil]];

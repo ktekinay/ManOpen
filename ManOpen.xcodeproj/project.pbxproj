@@ -60,6 +60,8 @@
 		E0CAF45625EC2FF0005B4C65 /* ServicesMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = E0CAF45825EC2FF0005B4C65 /* ServicesMenu.strings */; };
 		E0F6EC4C25E5C7EF0042529C /* ManWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = E0F6EC4A25E5C7EF0042529C /* ManWindowController.h */; };
 		E0F6EC4D25E5C7EF0042529C /* ManWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F6EC4B25E5C7EF0042529C /* ManWindowController.m */; };
+		08A1550B02D40954AAA08D9D /* MOCommandEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = FF3A6394C0E7A7157E5C6339 /* MOCommandEnvironment.h */; };
+		A69BAA34E52DA24A2F1A64FB /* MOCommandEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5F638874F304815D83272 /* MOCommandEnvironment.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,6 +160,8 @@
 		E0F6EC4A25E5C7EF0042529C /* ManWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManWindowController.h; sourceTree = "<group>"; };
 		E0F6EC4B25E5C7EF0042529C /* ManWindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ManWindowController.m; sourceTree = "<group>"; };
 		FC3FF8B4C63BAD8D3E071E15 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		FF3A6394C0E7A7157E5C6339 /* MOCommandEnvironment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOCommandEnvironment.h; sourceTree = "<group>"; };
+		3BC5F638874F304815D83272 /* MOCommandEnvironment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOCommandEnvironment.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,6 +271,7 @@
 				D39278F80821FFA400376676 /* ManDocumentController.m */,
 				E0F6EC4B25E5C7EF0042529C /* ManWindowController.m */,
 				D39278FA0821FFA400376676 /* NSData+Utils.m */,
+				3BC5F638874F304815D83272 /* MOCommandEnvironment.m */,
 				D39278FC0821FFA400376676 /* PrefPanelController.m */,
 			);
 			name = Classes;
@@ -280,6 +285,7 @@
 				D39279050821FFA400376676 /* ManDocumentController.h */,
 				E0F6EC4A25E5C7EF0042529C /* ManWindowController.h */,
 				D39279090821FFA400376676 /* NSData+Utils.h */,
+				FF3A6394C0E7A7157E5C6339 /* MOCommandEnvironment.h */,
 				D392790B0821FFA400376676 /* PrefPanelController.h */,
 			);
 			name = Headers;
@@ -443,6 +449,7 @@
 				D38A240614E4C3FE00F6AFFE /* ManDocumentController.h in Headers */,
 				E0F6EC4C25E5C7EF0042529C /* ManWindowController.h in Headers */,
 				D38A240814E4C3FE00F6AFFE /* NSData+Utils.h in Headers */,
+				08A1550B02D40954AAA08D9D /* MOCommandEnvironment.h in Headers */,
 				D38A240914E4C3FE00F6AFFE /* PrefPanelController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -619,6 +626,7 @@
 				E0F6EC4D25E5C7EF0042529C /* ManWindowController.m in Sources */,
 				D38A241E14E4C3FE00F6AFFE /* ManDocumentController.m in Sources */,
 				D38A241F14E4C3FE00F6AFFE /* NSData+Utils.m in Sources */,
+				A69BAA34E52DA24A2F1A64FB /* MOCommandEnvironment.m in Sources */,
 				D38A242014E4C3FE00F6AFFE /* PrefPanelController.m in Sources */,
 				D38A242114E4C3FE00F6AFFE /* ManOpen_main.m in Sources */,
 			);
