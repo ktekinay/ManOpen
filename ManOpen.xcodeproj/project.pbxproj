@@ -49,7 +49,6 @@
 		D38A24F414E5AC0600F6AFFE /* cat2rtf.l in Sources */ = {isa = PBXBuildFile; fileRef = D39279560821FFA400376676 /* cat2rtf.l */; };
 		D38A250514E5B05300F6AFFE /* cat2html.l in Sources */ = {isa = PBXBuildFile; fileRef = D39279690821FFA400376676 /* cat2html.l */; };
 		D3EA5B5A14E8DA3700AB000A /* helpQMark.tiff in Resources */ = {isa = PBXBuildFile; fileRef = D3EA5B5914E8DA3700AB000A /* helpQMark.tiff */; };
-		D3EA5C4014EDC3BE00AB000A /* openman.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = D392797F0821FFA400376676 /* openman.1 */; };
 		E0494B0825E1C2CF00F0A452 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0494B0725E1C2CF00F0A452 /* Images.xcassets */; };
 		E0494B3125E1DA3E00F0A452 /* ManPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0494B2525E1DA3E00F0A452 /* ManPage.xib */; };
 		E0494B3225E1DA3E00F0A452 /* ManOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0494B2725E1DA3E00F0A452 /* ManOpen.xib */; };
@@ -84,6 +83,9 @@
 		FF7C2DBAC692C73B5E877C59 /* MOAproposPrinting.m in Sources */ = {isa = PBXBuildFile; fileRef = D3531D0F8A98257FA176FD33 /* MOAproposPrinting.m */; };
 		FA988E6A3EF265E161B6FF86 /* MOAproposPrinting.m in Sources */ = {isa = PBXBuildFile; fileRef = D3531D0F8A98257FA176FD33 /* MOAproposPrinting.m */; };
 		22F782216E476E304BC97BBF /* MOAproposPrintingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 298D0D9926C8259C3A12C470 /* MOAproposPrintingTests.m */; };
+		0B8ABDE46559091E39F555A1 /* openman in Embed Command-Line Tool */ = {isa = PBXBuildFile; fileRef = D38A245114E4C3FE00F6AFFE /* openman */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		FD2496BB7705ACAC2372BCEA /* openman.1 in Embed Command-Line Tool Man Page */ = {isa = PBXBuildFile; fileRef = D392797F0821FFA400376676 /* openman.1 */; };
+		21F195B372A789BE8B004A60 /* MOAppBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 421F6ABBF5B9677458EDFF35 /* MOAppBundleTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +117,13 @@
 			remoteGlobalIDString = D38A244614E4C3FE00F6AFFE;
 			remoteInfo = "openman (Tool)";
 		};
+		1E60CED1139F880F3D472613 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D39279890821FFA400376676 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D38A244614E4C3FE00F6AFFE;
+			remoteInfo = "openman (Tool)";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -129,15 +138,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D3EA5C4314EDC3C100AB000A /* CopyFiles */ = {
+		B9D3B5FF6793C31A459B9C8A /* Embed Command-Line Tool */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = "/$(INSTALL_PATH)";
-			dstSubfolderSpec = 0;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Helpers;
+			dstSubfolderSpec = 1;
 			files = (
-				D3EA5C4014EDC3BE00AB000A /* openman.1 in CopyFiles */,
+				0B8ABDE46559091E39F555A1 /* openman in Embed Command-Line Tool */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			name = "Embed Command-Line Tool";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BCFCFB6B241C6E2BD2A19A3 /* Embed Command-Line Tool Man Page */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = man/man1;
+			dstSubfolderSpec = 7;
+			files = (
+				FD2496BB7705ACAC2372BCEA /* openman.1 in Embed Command-Line Tool Man Page */,
+			);
+			name = "Embed Command-Line Tool Man Page";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -201,6 +222,7 @@
 		B012EFFBE1E385B4CB8BFD02 /* MOAproposPrinting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOAproposPrinting.h; sourceTree = "<group>"; };
 		D3531D0F8A98257FA176FD33 /* MOAproposPrinting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAproposPrinting.m; sourceTree = "<group>"; };
 		298D0D9926C8259C3A12C470 /* MOAproposPrintingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAproposPrintingTests.m; sourceTree = "<group>"; };
+		421F6ABBF5B9677458EDFF35 /* MOAppBundleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOAppBundleTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -498,6 +520,7 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				421F6ABBF5B9677458EDFF35 /* MOAppBundleTests.m */,
 				298D0D9926C8259C3A12C470 /* MOAproposPrintingTests.m */,
 				133DC4E9C0EDCED5E7197B9B /* MOAproposTableTests.m */,
 				972205D975FD878CE86DA0FF /* MOSectionListingTests.m */,
@@ -563,12 +586,15 @@
 				D38A241A14E4C3FE00F6AFFE /* Sources */,
 				D38A242214E4C3FE00F6AFFE /* Frameworks */,
 				D38A242614E4C3FE00F6AFFE /* CopyFiles */,
+				B9D3B5FF6793C31A459B9C8A /* Embed Command-Line Tool */,
+				0BCFCFB6B241C6E2BD2A19A3 /* Embed Command-Line Tool Man Page */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				D38A245814E4C3FE00F6AFFE /* PBXTargetDependency */,
 				D38A245A14E4C3FE00F6AFFE /* PBXTargetDependency */,
+				C036347A9F183B5B859D88C8 /* PBXTargetDependency */,
 			);
 			name = ManOpen;
 			productInstallPath = "$(HOME)/Apps";
@@ -617,7 +643,6 @@
 				D38A244714E4C3FE00F6AFFE /* Headers */,
 				D38A244814E4C3FE00F6AFFE /* Sources */,
 				D38A244A14E4C3FE00F6AFFE /* Frameworks */,
-				D3EA5C4314EDC3C100AB000A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -758,6 +783,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21F195B372A789BE8B004A60 /* MOAppBundleTests.m in Sources */,
 				22F782216E476E304BC97BBF /* MOAproposPrintingTests.m in Sources */,
 				FA988E6A3EF265E161B6FF86 /* MOAproposPrinting.m in Sources */,
 				61B0D20C72A0A319F47326EA /* MOAproposTableTests.m in Sources */,
@@ -795,6 +821,11 @@
 			isa = PBXTargetDependency;
 			target = D38A244614E4C3FE00F6AFFE /* openman (Tool) */;
 			targetProxy = D38A247C14E4C7FC00F6AFFE /* PBXContainerItemProxy */;
+		};
+		C036347A9F183B5B859D88C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D38A244614E4C3FE00F6AFFE /* openman (Tool) */;
+			targetProxy = 1E60CED1139F880F3D472613 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1150,6 +1181,9 @@
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.clindberg.ManOpen.openman;
 				PRODUCT_NAME = openman;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";
@@ -1174,6 +1208,9 @@
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.clindberg.ManOpen.openman;
 				PRODUCT_NAME = openman;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SECTORDER_FLAGS = "";

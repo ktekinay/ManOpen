@@ -22,6 +22,17 @@ ManOpen adds three services to your computer:
 
 As of macOS 11.0, like other macOS services, you can enable and disable these services in System Preferences, in the Keyboard preference pane, under the Shortcuts tab, under the Services table item. You may need to log out and log back in again after installing the app before the services will appear. Also, do note that some third party apps, particularly antivirus apps, are known to interfere with services.
 
+### Using ManOpen from Terminal
+
+ManOpen includes a command-line tool, `openman`, inside the app at `ManOpen.app/Contents/Helpers/openman`, with its man page at `ManOpen.app/Contents/Resources/man/man1/openman.1`. It opens man pages in ManOpen instead of in Terminal. To use it, link it into a folder on your `PATH`, for example:
+
+```sh
+sudo ln -s /Applications/ManOpen.app/Contents/Helpers/openman /usr/local/bin/openman
+sudo ln -s /Applications/ManOpen.app/Contents/Resources/man/man1/openman.1 /usr/local/share/man/man1/openman.1
+```
+
+Then, for example, `openman ls` opens `ls`, `openman 3 printf` opens `printf` from section 3, `openman -k printf` searches with Apropos, and `openman -f file.1` opens a man page file. See `man openman` for details.
+
 ### Searching for man Pages
 
 By default, ManOpen will look for man pages in the following locations:
@@ -74,6 +85,7 @@ Version 3.1:
 - Apropos and List Pages windows: the Name column always comes first; drag the divider to resize it, and Description fills the rest of the window. Click a column header to sort by it. The Name width and sort are remembered and apply to all open Apropos windows at once. Double-click anywhere on a row to open the page. Resting the pointer on text that's cut off shows all of it.
 - Apropos and List Pages windows open much faster, especially File ▸ List Pages ▸ All Pages.
 - Printing an Apropos or List Pages window now prints wrapped, readable columns with the column headings and page numbers on every page, and is much faster.
+- The `openman` command-line tool is now included in the app, in `Contents/Helpers`. See "Using ManOpen from Terminal" above.
 - Added unit tests. See "Building" above.
 
 Version 3.0:
