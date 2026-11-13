@@ -5,6 +5,7 @@
 #import "ManDocumentController.h"
 #import "MOManPath.h"
 #import "MOColorDefaults.h"
+#import "MOModalPanel.h"
 
 @implementation NSUserDefaults (ManOpenPreferences)
 
@@ -187,11 +188,27 @@
     MORestoreDefaultColors([NSUserDefaults standardUserDefaults]);
 }
 
+/* The Font panel runs modally, with OK and Cancel (Plans 1a.10). Open pages preview the font live (1a.9). */
 - (IBAction)openFontPanel:(id)sender
 {
-    [[self window] makeFirstResponder:nil];     // Make sure *we* get the changeFont: call
-    [[NSFontManager sharedFontManager] setSelectedFont:[fontField font] isMultiple:NO];
-    [[NSFontPanel sharedFontPanel] orderFront:self];   // Leave us as key
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSFontManager *manager = [NSFontManager sharedFontManager];
+    NSString *domain = [NSBundle mainBundle].bundleIdentifier;
+    MOPreferenceSnapshot *original = [MOPreferenceSnapshot snapshotOfKey:@"ManFont" inDefaults:defaults domain:domain];
+    id previousTarget = manager.target;
+
+    [[self window] makeFirstResponder:nil];
+    [manager setSelectedFont:[fontField font] isMultiple:NO];
+    manager.target = self; // the panel is key while modal, so send changeFont: here directly
+
+    MOModalPanelEnd end = [MOModalPanelSession runPanel:[manager fontPanel:YES]];
+
+    manager.target = previousTarget;
+    if (!MOModalPanelEndKeepsChoice(end))
+    {
+        [original restoreInDefaults:defaults];
+        [self setFontFieldToFont:[defaults manFont]];
+    }
 }
 
 - (void)changeFont:(nullable NSFontManager *)sender

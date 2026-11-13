@@ -110,6 +110,10 @@
 		BCCB720231256EA2F985DD05 /* MOPreferenceUpdates.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A1B82FDE225F2CDC5C92EC1 /* MOPreferenceUpdates.h */; };
 		915BE137C8D5212639FE22EA /* MOManPageStyleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F959DF3AE1ED065E19C148BA /* MOManPageStyleTests.m */; };
 		FD5AC802850BB3A4399A33C2 /* MOPreferenceUpdatesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D135230E10878CD3C344B0B /* MOPreferenceUpdatesTests.m */; };
+		5C9ABA01FD1EDF7D3F23F398 /* MOModalPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FAB5ECB2F70AF8F3E5993C /* MOModalPanel.m */; };
+		7A9A60AF5A4963FC43F56337 /* MOModalPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FAB5ECB2F70AF8F3E5993C /* MOModalPanel.m */; };
+		625BEB0E6661B891173277D8 /* MOModalPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4DD692A5E6ECD387469B5 /* MOModalPanel.h */; };
+		340AD17C4F5492564CF6E33D /* MOModalPanelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AB76360C3DA6888BCA76944A /* MOModalPanelTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,6 +270,9 @@
 		1A1B82FDE225F2CDC5C92EC1 /* MOPreferenceUpdates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOPreferenceUpdates.h; sourceTree = "<group>"; };
 		F959DF3AE1ED065E19C148BA /* MOManPageStyleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOManPageStyleTests.m; sourceTree = "<group>"; };
 		2D135230E10878CD3C344B0B /* MOPreferenceUpdatesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOPreferenceUpdatesTests.m; sourceTree = "<group>"; };
+		E7FAB5ECB2F70AF8F3E5993C /* MOModalPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOModalPanel.m; sourceTree = "<group>"; };
+		F9F4DD692A5E6ECD387469B5 /* MOModalPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOModalPanel.h; sourceTree = "<group>"; };
+		AB76360C3DA6888BCA76944A /* MOModalPanelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOModalPanelTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -379,6 +386,7 @@
 		D39278F10821FFA400376676 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E7FAB5ECB2F70AF8F3E5993C /* MOModalPanel.m */,
 				AA3D984DDCF8C47D5B3ED321 /* MOPreferenceUpdates.m */,
 				8C6EB9CA8071470981ECD921 /* MOManPageStyle.m */,
 				E023F1F1328FFFA90CF12A5B /* MOReopenPolicy.m */,
@@ -403,6 +411,7 @@
 		D39278FE0821FFA400376676 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				F9F4DD692A5E6ECD387469B5 /* MOModalPanel.h */,
 				1A1B82FDE225F2CDC5C92EC1 /* MOPreferenceUpdates.h */,
 				B4A8B9E950ADF0484B4A4101 /* MOManPageStyle.h */,
 				8D0F339B163A77B2FD309D7C /* MOReopenPolicy.h */,
@@ -575,6 +584,7 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				AB76360C3DA6888BCA76944A /* MOModalPanelTests.m */,
 				2D135230E10878CD3C344B0B /* MOPreferenceUpdatesTests.m */,
 				F959DF3AE1ED065E19C148BA /* MOManPageStyleTests.m */,
 				5B298B5D1CB92665E874E730 /* MOPanelFontTests.m */,
@@ -600,6 +610,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				625BEB0E6661B891173277D8 /* MOModalPanel.h in Headers */,
 				BCCB720231256EA2F985DD05 /* MOPreferenceUpdates.h in Headers */,
 				289C2C67C8BB8B5F21FD518D /* MOManPageStyle.h in Headers */,
 				0E87AAE3B5A56D16D798D8C7 /* MOReopenPolicy.h in Headers */,
@@ -806,6 +817,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C9ABA01FD1EDF7D3F23F398 /* MOModalPanel.m in Sources */,
 				EC392BE7B0E7D600C044E8A4 /* MOPreferenceUpdates.m in Sources */,
 				A31C26ABEDA29CB549EA7DC6 /* MOManPageStyle.m in Sources */,
 				C775F4ED08B4F406155F98DF /* MOReopenPolicy.m in Sources */,
@@ -856,6 +868,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				340AD17C4F5492564CF6E33D /* MOModalPanelTests.m in Sources */,
+				7A9A60AF5A4963FC43F56337 /* MOModalPanel.m in Sources */,
 				FD5AC802850BB3A4399A33C2 /* MOPreferenceUpdatesTests.m in Sources */,
 				915BE137C8D5212639FE22EA /* MOManPageStyleTests.m in Sources */,
 				89925C7A0269F8CBE4BBB33C /* MOPreferenceUpdates.m in Sources */,
