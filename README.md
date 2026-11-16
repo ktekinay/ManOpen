@@ -94,6 +94,7 @@ Version 3.1:
 - The Font and Color panels opened from Preferences now stay in front until you click OK or Cancel (Return or Escape). Open man pages show the change while you choose; Cancel puts back the previous font or color.
 - A new **Restore Default Font** button in Preferences ▸ Appearance goes back to the default font: the system's fixed-width font (Menlo) at 12 points.
 - Links now use the system link color by default, so they're readable in Dark Mode and with Increase Contrast. If your link color was still the old default blue, it switches to the new default automatically; colors you chose are kept. A new **Restore Default Colors** button in Preferences ▸ Appearance goes back to the system colors.
+- The man page text, link and background colors in Preferences can now be set separately for Light and Dark Mode. The color wells show and change the colors for the mode ManOpen is in; switch modes to set the others. Restore Default Colors resets only the current mode. Colors set in earlier versions now apply to Light Mode only, so pages in Dark Mode use the dark system colors.
 - Man pages now always print in the standard light colors, dark text and links on white paper, whether ManOpen is in Light or Dark Mode and whatever colors are set in Preferences.
 - Added unit tests. See "Building" above.
 

@@ -8,6 +8,7 @@
 #import "MOReopenPolicy.h"
 #import "MOPreferenceUpdates.h"
 #import "MOManPageStyle.h"
+#import "MOColorDefaults.h"
 #import "MOSectionListing.h"
 #import "PrefPanelController.h"
 
@@ -159,7 +160,11 @@ static void *MOPreferenceObservationContext = &MOPreferenceObservationContext;
 - (void)updateManPageColors
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    MOSetManPageColors(defaults.manTextColor, defaults.manLinkColor, defaults.manBackgroundColor);
+    for (MOColorAppearance appearance = MOColorAppearanceLight; appearance <= MOColorAppearanceDark; appearance++)
+        MOSetManPageColors(appearance,
+                           MOStoredColor(defaults, MOColorSettingText, appearance),
+                           MOStoredColor(defaults, MOColorSettingLink, appearance),
+                           MOStoredColor(defaults, MOColorSettingBackground, appearance));
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey, id> *)change context:(void *)context

@@ -8,10 +8,13 @@
         <customObject id="-2" userLabel="File's Owner" customClass="PrefPanelController">
             <connections>
                 <outlet property="appPopup" destination="185" id="198"/>
+                <outlet property="backgroundColorWell" destination="255" id="MOc-Wb-g01"/>
                 <outlet property="fontField" destination="133" id="141"/>
                 <outlet property="generalSwitchMatrix" destination="291" id="374"/>
+                <outlet property="linkColorWell" destination="252" id="MOc-Wl-k01"/>
                 <outlet property="manPathController" destination="313" id="347"/>
                 <outlet property="manPathTableView" destination="TAo-dF-gkX" id="xG1-8E-E92"/>
+                <outlet property="textColorWell" destination="249" id="MOc-Wt-x01"/>
                 <outlet property="window" destination="225" id="324"/>
             </connections>
         </customObject>
@@ -208,13 +211,6 @@
                                                 <constraint firstAttribute="width" constant="53" id="2ua-Tk-8GK"/>
                                             </constraints>
                                             <color key="color" red="0.058130499000000002" green="0.055541898999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <connections>
-                                                <binding destination="259" name="value" keyPath="values.ManTextColor" id="SYA-eI-ueo">
-                                                    <dictionary key="options">
-                                                        <string key="NSValueTransformerName">ManOpenColorDataTransformer</string>
-                                                    </dictionary>
-                                                </binding>
-                                            </connections>
                                         </colorWell>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="250">
                                             <rect key="frame" x="75" y="119" width="111" height="17"/>
@@ -230,13 +226,6 @@
                                         <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="252" customClass="MOModalColorWell">
                                             <rect key="frame" x="17" y="80" width="53" height="31"/>
                                             <color key="color" red="0.058130499000000002" green="0.055541898999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <connections>
-                                                <binding destination="259" name="value" keyPath="values.ManLinkColor" id="vqo-Af-Ztv">
-                                                    <dictionary key="options">
-                                                        <string key="NSValueTransformerName">ManOpenColorDataTransformer</string>
-                                                    </dictionary>
-                                                </binding>
-                                            </connections>
                                         </colorWell>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="253">
                                             <rect key="frame" x="75" y="87" width="111" height="17"/>
@@ -252,13 +241,6 @@
                                         <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="255" customClass="MOModalColorWell">
                                             <rect key="frame" x="17" y="48" width="53" height="31"/>
                                             <color key="color" red="0.058130499000000002" green="0.055541898999999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <connections>
-                                                <binding destination="259" name="value" keyPath="values.ManBackgroundColor" id="bcM-Rb-HcB">
-                                                    <dictionary key="options">
-                                                        <string key="NSValueTransformerName">ManOpenColorDataTransformer</string>
-                                                    </dictionary>
-                                                </binding>
-                                            </connections>
                                         </colorWell>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="256">
                                             <rect key="frame" x="75" y="55" width="111" height="17"/>

@@ -64,11 +64,29 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end);
 @end
 
 /*
- * A color well that, when clicked, runs the Color panel modally. The well is
- * bound to a preference; Cancel restores that preference as it was stored
+ * A color well that, when clicked, runs the Color panel modally. Cancel puts
+ * back the color the well had, and the preference it edits as it was stored
  * (M3). Used for the Preferences color wells.
  */
 @interface MOModalColorWell : NSColorWell
+
+/*
+ * While the panel is open, each color it gives the well is sent as the well's
+ * action. The session is modal, so a target outside the panel must answer
+ * YES to -worksWhenModal to receive it.
+ */
+
+/* The preference the well's owner stores its color in; restored on Cancel. nil: none. */
+@property(nonatomic, copy, nullable) NSString *preferenceKey;
+/* Where that preference is stored. Default: the standard user defaults, in the app's domain. */
+@property(nonatomic, strong, null_resettable) NSUserDefaults *preferences;
+@property(nonatomic, copy, null_resettable) NSString *preferencesDomain;
+
+/* YES from the click until the session has ended and the color is settled. */
+@property(nonatomic, readonly, getter=isRunningModal) BOOL runningModal;
+/* Called once the session has ended and the color is settled. */
+@property(nonatomic, copy, nullable) void (^sessionDidEnd)(MOModalColorWell *well);
+
 @end
 
 NS_ASSUME_NONNULL_END

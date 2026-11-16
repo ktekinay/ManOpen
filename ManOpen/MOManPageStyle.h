@@ -27,23 +27,37 @@ extern NSAttributedStringKey const MOOriginalFontAttributeName;
  */
 BOOL MOApplyManPageStyle(NSMutableAttributedString *text, NSFont *font, NSColor *textColor);
 
+/* The appearances man page colors can be chosen for (Plans 1a.13, C1). */
+typedef NS_ENUM(NSInteger, MOColorAppearance) {
+    MOColorAppearanceLight,
+    MOColorAppearanceDark,
+};
+
+/*
+ * Which set of colors an appearance uses: Dark for Dark Mode and its
+ * variants (Increase Contrast, vibrant), otherwise Light (C6).
+ */
+MOColorAppearance MOColorAppearanceOf(NSAppearance * _Nullable appearance);
+
 /*
  * The colors man pages are drawn with. Each is one fixed color object that
- * draws as the color last given to MOSetManPageColors(), resolved in the
- * appearance it's drawn in. Pages keep using the same objects, so a color
- * change in Preferences only needs a redraw: no edit to the text and no new
- * layout, which keeps dragging in the color panel smooth on big pages (L2, L8).
+ * draws as the color last given to MOSetManPageColors() for the appearance
+ * it's drawn in, resolved in that appearance. Pages keep using the same
+ * objects, so a color change in Preferences, or a switch between Light and
+ * Dark Mode, only needs a redraw: no edit to the text and no new layout,
+ * which keeps dragging in the color panel smooth on big pages (L2, L8, C5).
  */
 NSColor *MOManPageTextColor(void);
 NSColor *MOManPageLinkColor(void);
 NSColor *MOManPageBackgroundColor(void);
 
 /*
- * Sets what the man page colors draw as; nil means the system default for that
- * color. One of the man page colors themselves (or a stored copy of one) also
- * means the default: drawing it would only lead back to itself.
+ * Sets what the man page colors draw as in `appearance`; nil means the system
+ * default for that color, as it looks in the appearance drawn in. One of the
+ * man page colors themselves (or a stored copy of one) also means the default:
+ * drawing it would only lead back to itself.
  */
-void MOSetManPageColors(NSColor * _Nullable text, NSColor * _Nullable link, NSColor * _Nullable background);
+void MOSetManPageColors(MOColorAppearance appearance, NSColor * _Nullable text, NSColor * _Nullable link, NSColor * _Nullable background);
 
 /* YES for one of the man page colors above, or a copy of one decoded from preferences. */
 BOOL MOIsManPageColor(NSColor * _Nullable color);

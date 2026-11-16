@@ -6,29 +6,11 @@
 #import "MOManPath.h"
 #import "MOColorDefaults.h"
 #import "MOModalPanel.h"
+#import "MOColorWellsController.h"
 #import "MOFontDefaults.h"
 
 @implementation NSUserDefaults (ManOpenPreferences)
 
-- (NSColor *)_manColorForKey:(NSString *)key
-{
-    NSData *colorData = [self dataForKey:key];
-    
-    return MOColorFromData(colorData);
-}
-- (NSColor *)manTextColor
-{
-    return [self _manColorForKey:@"ManTextColor"];
-}
-- (NSColor *)manLinkColor
-{
-    return [self _manColorForKey:@"ManLinkColor"];
-}
-- (NSColor *)manBackgroundColor
-{
-    return [self _manColorForKey:@"ManBackgroundColor"];
-}
-    
 - (NSFont *)manFont
 {
     return MOManFont(self);
@@ -58,21 +40,10 @@
     NSFileManager *manager = [NSFileManager defaultManager];
     NSDictionary *defaults;
     NSString *nroff   = @"nroff -mandoc '%@'";
-    NSData *textColor, *linkColor, *bgColor;
 
     MOMigrateColorDefaults(userDefaults); // drop stored copies of the old fixed link color and of the page colors (B18)
-    textColor = [userDefaults dataForKey:MOLegacyTextColorKey];
-    linkColor = [userDefaults dataForKey:MOLegacyLinkColorKey];
-    bgColor = [userDefaults dataForKey:MOLegacyBackgroundColorKey];
     NSMutableArray *manpath = [[[userDefaults stringForKey:@"ManPath"] componentsSeparatedByString:@":"] mutableCopy];  // historical name
     
-    /* System colors, which adapt to Light Mode, Dark Mode and Increase Contrast. */
-    if (textColor == nil)
-        textColor = MODataFromColor([NSColor textColor]);
-    if (linkColor == nil)
-        linkColor = MODataFromColor(MODefaultLinkColor());
-    if (bgColor == nil)
-        bgColor = MODataFromColor([NSColor textBackgroundColor]);
     if (!manpath)
     {
         manpath = [[NSMutableArray alloc] init];
@@ -103,9 +74,8 @@
                 nroff,          @"NroffCommand",
                 manpath,        @"ManPathArray",
                 @NO,            @"KeepPanelsOpen",
-                textColor,      @"ManTextColor",
-                linkColor,      @"ManLinkColor",
-                bgColor,        @"ManBackgroundColor",
+                // No colors: one that isn't stored is the system default for its
+                // appearance, which adapts to Increase Contrast too (MOColorForSetting).
                 @YES,           @"NSQuitAlwaysKeepsWindows", // NO will disable by default
                 @750,           @"NSInitialToolTipDelay", // ms; e.g. the full text of a truncated Apropos cell
                 nil];
@@ -159,6 +129,11 @@
     [self setUpDefaultManViewerApp];
     [self setUpManPathUI];
     [self setFontFieldToFont:[[NSUserDefaults standardUserDefaults] manFont]];
+
+    colorWells = [[MOColorWellsController alloc] initWithDefaults:[NSUserDefaults standardUserDefaults]
+                                                           domain:[NSBundle mainBundle].bundleIdentifier
+                                                         textWell:textColorWell linkWell:linkColorWell backgroundWell:backgroundColorWell];
+    [colorWells followApplicationAppearance]; // the wells show the current appearance's colors (Plans 1a.13)
 }
 
 - (void)setFontFieldToFont:(NSFont *)font
@@ -169,10 +144,11 @@
         [NSString stringWithFormat:@"%@ %.1f", [font familyName], [font pointSize]]];
 }
 
-/* Removes the stored colors, so the system's dynamic defaults apply again. */
+/* Removes the colors stored for the current appearance, so the system's dynamic defaults apply there again (C7). */
 - (IBAction)restoreDefaultColors:(id)sender
 {
-    MORestoreDefaultColors([NSUserDefaults standardUserDefaults]);
+    [self window]; // loads the wells
+    [colorWells restoreDefaultColors];
 }
 
 /* Removes the stored font, so the system's fixed-pitch font at 12 pt applies again (Plans 1a.14). */
@@ -324,34 +300,6 @@
     *anObject = [string stringByExpandingTildeInPath];
     return YES;
 }
-@end
-
-// This transformer is used to load and store the color wells.
-@implementation ManOpenColorDataTransformer
-
-+ (Class)transformedValueClass
-{
-    return NSColor.class;
-}
-
-
-+ (BOOL)allowsReverseTransformation
-{
-    return YES;
-}
-
-
-- (id)transformedValue:(id)value
-{
-    return MOColorFromData(value);
-}
-
-
-- (id)reverseTransformedValue:(id)value
-{
-    return MODataFromColor(value);
-}
-
 @end
 
 static NSString *ManPathIndexSetPboardType = @"org.clindberg.ManOpen.ManPathIndexSetType";

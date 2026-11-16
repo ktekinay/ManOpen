@@ -6,7 +6,6 @@
 //
 
 #import "MOColorDefaults.h"
-#import "MOManPageStyle.h"
 
 NSString * const MOTextColorKey = @"ManTextColor";
 NSString * const MOLinkColorKey = @"ManLinkColor";
@@ -14,6 +13,39 @@ NSString * const MOBackgroundColorKey = @"ManBackgroundColor";
 NSString * const MOLegacyTextColorKey = @"TextColor";
 NSString * const MOLegacyLinkColorKey = @"LinkColor";
 NSString * const MOLegacyBackgroundColorKey = @"BackgroundColor";
+NSString * const MOTextColorDarkKey = @"ManTextColorDark";
+NSString * const MOLinkColorDarkKey = @"ManLinkColorDark";
+NSString * const MOBackgroundColorDarkKey = @"ManBackgroundColorDark";
+
+static NSString *LegacyKey(MOColorSetting setting)
+{
+    switch (setting)
+    {
+        case MOColorSettingText:       return MOLegacyTextColorKey;
+        case MOColorSettingLink:       return MOLegacyLinkColorKey;
+        case MOColorSettingBackground: return MOLegacyBackgroundColorKey;
+    }
+    return MOLegacyTextColorKey;
+}
+
+NSString *MOColorKey(MOColorSetting setting, MOColorAppearance appearance)
+{
+    BOOL dark = (appearance == MOColorAppearanceDark);
+    switch (setting)
+    {
+        case MOColorSettingText:       return dark ? MOTextColorDarkKey : MOTextColorKey;
+        case MOColorSettingLink:       return dark ? MOLinkColorDarkKey : MOLinkColorKey;
+        case MOColorSettingBackground: return dark ? MOBackgroundColorDarkKey : MOBackgroundColorKey;
+    }
+    return dark ? MOTextColorDarkKey : MOTextColorKey;
+}
+
+NSArray<NSString *> *MOAllColorKeys(void)
+{
+    return @[ MOTextColorKey, MOLinkColorKey, MOBackgroundColorKey,
+              MOLegacyTextColorKey, MOLegacyLinkColorKey, MOLegacyBackgroundColorKey,
+              MOTextColorDarkKey, MOLinkColorDarkKey, MOBackgroundColorDarkKey ];
+}
 
 NSColor *MOColorFromData(NSData *data)
 {
@@ -55,6 +87,33 @@ NSColor *MODefaultLinkColor(void)
     return [NSColor linkColor];
 }
 
+NSColor *MODefaultColor(MOColorSetting setting)
+{
+    switch (setting)
+    {
+        case MOColorSettingText:       return [NSColor textColor];
+        case MOColorSettingLink:       return MODefaultLinkColor();
+        case MOColorSettingBackground: return [NSColor textBackgroundColor];
+    }
+    return [NSColor textColor];
+}
+
+NSColor *MOStoredColor(NSUserDefaults *defaults, MOColorSetting setting, MOColorAppearance appearance)
+{
+    NSString *key = MOColorKey(setting, appearance);
+    id stored = [defaults objectForKey:key];
+    if (stored == nil && appearance == MOColorAppearanceLight)
+        stored = [defaults objectForKey:LegacyKey(setting)];
+
+    NSColor *color = MOColorFromData(stored);
+    return MOIsManPageColor(color) ? nil : color;
+}
+
+NSColor *MOColorForSetting(NSUserDefaults *defaults, MOColorSetting setting, MOColorAppearance appearance)
+{
+    return MOStoredColor(defaults, setting, appearance) ?: MODefaultColor(setting);
+}
+
 BOOL MOIsOldDefaultLinkColor(NSColor *color)
 {
     if (color == nil || color.type != NSColorTypeComponentBased || ![color.colorSpace isEqual:[NSColorSpace deviceRGBColorSpace]])
@@ -79,8 +138,7 @@ void MOMigrateColorDefaults(NSUserDefaults *defaults)
     }
     // A stored man page color was never a real choice (B18): it stood for whatever
     // the page drew with, and drawing it led back to itself.
-    for (NSString *key in @[ MOTextColorKey, MOLinkColorKey, MOBackgroundColorKey,
-                             MOLegacyTextColorKey, MOLegacyLinkColorKey, MOLegacyBackgroundColorKey ])
+    for (NSString *key in MOAllColorKeys())
     {
         NSData *data = [defaults dataForKey:key];
 
@@ -89,11 +147,12 @@ void MOMigrateColorDefaults(NSUserDefaults *defaults)
     }
 }
 
-void MORestoreDefaultColors(NSUserDefaults *defaults)
+void MORestoreDefaultColors(NSUserDefaults *defaults, MOColorAppearance appearance)
 {
-    for (NSString *key in @[ MOTextColorKey, MOLinkColorKey, MOBackgroundColorKey,
-                             MOLegacyTextColorKey, MOLegacyLinkColorKey, MOLegacyBackgroundColorKey ])
+    for (MOColorSetting setting = MOColorSettingText; setting <= MOColorSettingBackground; setting++)
     {
-        [defaults removeObjectForKey:key];
+        [defaults removeObjectForKey:MOColorKey(setting, appearance)];
+        if (appearance == MOColorAppearanceLight)
+            [defaults removeObjectForKey:LegacyKey(setting)];
     }
 }

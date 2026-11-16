@@ -2,6 +2,8 @@
 
 #import <AppKit/AppKit.h>
 
+@class MOModalColorWell, MOColorWellsController;
+
 @interface PrefPanelController : NSWindowController <NSFontChanging, NSMenuItemValidation>
 {
     NSMutableArray *manPathArray;
@@ -10,6 +12,10 @@
     IBOutlet NSTextField *fontField;
     IBOutlet NSMatrix *generalSwitchMatrix;
     IBOutlet NSPopUpButton *appPopup;
+    IBOutlet MOModalColorWell *textColorWell;
+    IBOutlet MOModalColorWell *linkColorWell;
+    IBOutlet MOModalColorWell *backgroundColorWell;
+    MOColorWellsController *colorWells;
 }
 
 + (id)sharedInstance;
@@ -31,14 +37,8 @@
 @interface NSUserDefaults (ManOpenPreferences)
 - (NSFont *)manFont;
 - (NSString *)manPath;
-- (NSColor *)manTextColor;
-- (NSColor *)manLinkColor;
-- (NSColor *)manBackgroundColor;
 @end
 
 // This needs to be in the header so IB can find it
 @interface DisplayPathFormatter : NSFormatter
-@end
-
-@interface ManOpenColorDataTransformer : NSValueTransformer
 @end

@@ -19,6 +19,12 @@ static NSDictionary<NSString *, NSNumber *> *UpdatesByKey(void)
             @"ManTextColor":        @(MOManPageUpdateRestyle),
             @"ManLinkColor":        @(MOManPageUpdateRestyle),
             @"ManBackgroundColor":  @(MOManPageUpdateRestyle),
+            @"ManTextColorDark":    @(MOManPageUpdateRestyle),
+            @"ManLinkColorDark":    @(MOManPageUpdateRestyle),
+            @"ManBackgroundColorDark": @(MOManPageUpdateRestyle),
+            @"TextColor":           @(MOManPageUpdateRestyle), // 2.x keys: the Light colors when the above aren't stored
+            @"LinkColor":           @(MOManPageUpdateRestyle),
+            @"BackgroundColor":     @(MOManPageUpdateRestyle),
             @"UseBold":             @(MOManPageUpdateRegenerateAll),
             @"UseItalics":          @(MOManPageUpdateRegenerateAll),
             @"NroffCommand":        @(MOManPageUpdateRegenerateNroffFiles),

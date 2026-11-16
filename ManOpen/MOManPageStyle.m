@@ -54,22 +54,31 @@ BOOL MOApplyManPageStyle(NSMutableAttributedString *text, NSFont *font, NSColor 
     return fontsChanged;
 }
 
-static NSColor *CurrentText, *CurrentLink, *CurrentBackground;
+/* What each man page color draws as, by appearance; nil is the system default. */
+typedef NS_ENUM(NSInteger, ManPageColor) { TextColor, LinkColor, BackgroundColor, ManPageColorCount };
+static NSColor *Current[ManPageColorCount][2];
 
 static NSString * const TextColorName = @"ManOpenTextColor";
 static NSString * const LinkColorName = @"ManOpenLinkColor";
 static NSString * const BackgroundColorName = @"ManOpenBackgroundColor";
 
+MOColorAppearance MOColorAppearanceOf(NSAppearance *appearance)
+{
+    NSAppearanceName match = [appearance bestMatchFromAppearancesWithNames:@[ NSAppearanceNameAqua, NSAppearanceNameDarkAqua ]];
+    return [match isEqualToString:NSAppearanceNameDarkAqua] ? MOColorAppearanceDark : MOColorAppearanceLight;
+}
+
 /* How many man page colors this thread is resolving right now. */
 static _Thread_local NSUInteger Resolving;
 
-/* A color that draws as `*current` (or `fallback`), resolved in the appearance it's drawn in. */
-static NSColor *FollowingColor(NSString *name, NSColor * __strong *current, NSColor *(^fallback)(void))
+/* A color that draws as the current setting for `which` (or `fallback`), resolved in the appearance it's drawn in. */
+static NSColor *FollowingColor(NSString *name, ManPageColor which, NSColor *(^fallback)(void))
 {
     return [NSColor colorWithName:name dynamicProvider:^NSColor *(NSAppearance *appearance) {
+        NSColor *chosen = Current[which][MOColorAppearanceOf(appearance)];
         // A man page color that leads back to a man page color would never
         // finish resolving (B18), so the inner one draws as its default.
-        NSColor *color = (Resolving == 0) ? (*current ?: fallback()) : fallback();
+        NSColor *color = (Resolving == 0) ? (chosen ?: fallback()) : fallback();
         __block NSColor *resolved = nil;
         Resolving++;
         [appearance performAsCurrentDrawingAppearance:^{
@@ -84,7 +93,7 @@ NSColor *MOManPageTextColor(void)
 {
     static NSColor *color;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ color = FollowingColor(TextColorName, &CurrentText, ^{ return [NSColor textColor]; }); });
+    dispatch_once(&once, ^{ color = FollowingColor(TextColorName, TextColor, ^{ return [NSColor textColor]; }); });
     return color;
 }
 
@@ -92,7 +101,7 @@ NSColor *MOManPageLinkColor(void)
 {
     static NSColor *color;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ color = FollowingColor(LinkColorName, &CurrentLink, ^{ return [NSColor linkColor]; }); });
+    dispatch_once(&once, ^{ color = FollowingColor(LinkColorName, LinkColor, ^{ return [NSColor linkColor]; }); });
     return color;
 }
 
@@ -100,7 +109,7 @@ NSColor *MOManPageBackgroundColor(void)
 {
     static NSColor *color;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ color = FollowingColor(BackgroundColorName, &CurrentBackground, ^{ return [NSColor textBackgroundColor]; }); });
+    dispatch_once(&once, ^{ color = FollowingColor(BackgroundColorName, BackgroundColor, ^{ return [NSColor textBackgroundColor]; }); });
     return color;
 }
 
@@ -112,11 +121,12 @@ BOOL MOIsManPageColor(NSColor *color)
     return [name isEqualToString:TextColorName] || [name isEqualToString:LinkColorName] || [name isEqualToString:BackgroundColorName];
 }
 
-void MOSetManPageColors(NSColor *text, NSColor *link, NSColor *background)
+void MOSetManPageColors(MOColorAppearance appearance, NSColor *text, NSColor *link, NSColor *background)
 {
-    CurrentText = MOIsManPageColor(text) ? nil : text;
-    CurrentLink = MOIsManPageColor(link) ? nil : link;
-    CurrentBackground = MOIsManPageColor(background) ? nil : background;
+    NSInteger index = (appearance == MOColorAppearanceDark) ? 1 : 0;
+    Current[TextColor][index] = MOIsManPageColor(text) ? nil : text;
+    Current[LinkColor][index] = MOIsManPageColor(link) ? nil : link;
+    Current[BackgroundColor][index] = MOIsManPageColor(background) ? nil : background;
 }
 
 NSDictionary<NSAttributedStringKey, id> *MOManPageLinkAttributes(NSDictionary<NSAttributedStringKey, id> *current, NSColor *linkColor)

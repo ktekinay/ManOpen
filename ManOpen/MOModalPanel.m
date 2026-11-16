@@ -204,7 +204,29 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
 
 @implementation MOModalColorWell
 {
-    BOOL _runningModal;
+    BOOL _following; // the panel is open and the well takes its color
+}
+
+/*
+ * A color the open panel gives the well is sent on as the well's action, so
+ * its owner can store it live. Without bindings nothing else would see it.
+ */
+- (void)setColor:(NSColor *)color
+{
+    BOOL changed = ![self.color isEqual:color];
+    [super setColor:color];
+    if (_following && changed && self.isActive)
+        [self sendAction:self.action to:self.target];
+}
+
+- (NSUserDefaults *)preferences
+{
+    return _preferences ?: [NSUserDefaults standardUserDefaults];
+}
+
+- (NSString *)preferencesDomain
+{
+    return _preferencesDomain ?: ([NSBundle mainBundle].bundleIdentifier ?: @"");
 }
 
 - (void)activate:(BOOL)exclusive
@@ -219,13 +241,6 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
     });
 }
 
-/* The preference this well is bound to ("values.ManTextColor" → "ManTextColor"), if any. */
-- (nullable NSString *)boundPreferenceKey
-{
-    NSString *path = [self infoForBinding:NSValueBinding][NSObservedKeyPathKey];
-    return [path hasPrefix:@"values."] ? [path substringFromIndex:@"values.".length] : nil;
-}
-
 - (void)runModalColorPanel
 {
     if (!self.isActive)
@@ -234,10 +249,11 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
         return;
     }
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *key = [self boundPreferenceKey];
-    NSString *domain = [NSBundle mainBundle].bundleIdentifier;
-    MOPreferenceSnapshot *original = (key != nil && domain != nil) ? [MOPreferenceSnapshot snapshotOfKey:key inDefaults:defaults domain:domain] : nil;
+    // The key is the one the well edited when the panel opened, even if the
+    // owner would point it elsewhere meanwhile (an appearance switch, 1a.13).
+    NSUserDefaults *defaults = self.preferences;
+    NSString *key = self.preferenceKey;
+    MOPreferenceSnapshot *original = (key != nil) ? [MOPreferenceSnapshot snapshotOfKey:key inDefaults:defaults domain:self.preferencesDomain] : nil;
     NSColor *originalColor = self.color;
 
     // Stop following the panel while it's still open (B18). Once it closes,
@@ -245,20 +261,23 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
     // the panel to the page's own text color, which an active well would take
     // and store. Also, later uses of the color panel mustn't change this
     // preference (M5).
+    _following = YES;
     MOModalPanelEnd end = [MOModalPanelSession runPanel:[NSColorPanel sharedColorPanel] whenEnding:^(MOModalPanelEnd end) {
+        self->_following = NO;
         [self deactivate];
     }];
 
+    _following = NO;
     [self deactivate]; // in case the session ended without calling back
     // A man page color is never a choice: it only stands for what pages draw with.
     if (!MOModalPanelEndKeepsChoice(end) || MOIsManPageColor(self.color))
     {
-        if (original != nil)
-            [original restoreInDefaults:defaults]; // the binding shows it in the well
-        else
-            self.color = originalColor;
+        [original restoreInDefaults:defaults];
+        self.color = originalColor;
     }
     _runningModal = NO;
+    if (self.sessionDidEnd != nil)
+        self.sessionDidEnd(self);
 }
 
 @end
