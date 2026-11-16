@@ -56,15 +56,26 @@ BOOL MOApplyManPageStyle(NSMutableAttributedString *text, NSFont *font, NSColor 
 
 static NSColor *CurrentText, *CurrentLink, *CurrentBackground;
 
+static NSString * const TextColorName = @"ManOpenTextColor";
+static NSString * const LinkColorName = @"ManOpenLinkColor";
+static NSString * const BackgroundColorName = @"ManOpenBackgroundColor";
+
+/* How many man page colors this thread is resolving right now. */
+static _Thread_local NSUInteger Resolving;
+
 /* A color that draws as `*current` (or `fallback`), resolved in the appearance it's drawn in. */
 static NSColor *FollowingColor(NSString *name, NSColor * __strong *current, NSColor *(^fallback)(void))
 {
     return [NSColor colorWithName:name dynamicProvider:^NSColor *(NSAppearance *appearance) {
-        NSColor *color = *current ?: fallback();
+        // A man page color that leads back to a man page color would never
+        // finish resolving (B18), so the inner one draws as its default.
+        NSColor *color = (Resolving == 0) ? (*current ?: fallback()) : fallback();
         __block NSColor *resolved = nil;
+        Resolving++;
         [appearance performAsCurrentDrawingAppearance:^{
             resolved = [color colorUsingType:NSColorTypeComponentBased];
         }];
+        Resolving--;
         return resolved ?: color; // pattern colors can't be resolved; draw them as they are
     }];
 }
@@ -73,7 +84,7 @@ NSColor *MOManPageTextColor(void)
 {
     static NSColor *color;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ color = FollowingColor(@"ManOpenTextColor", &CurrentText, ^{ return [NSColor textColor]; }); });
+    dispatch_once(&once, ^{ color = FollowingColor(TextColorName, &CurrentText, ^{ return [NSColor textColor]; }); });
     return color;
 }
 
@@ -81,7 +92,7 @@ NSColor *MOManPageLinkColor(void)
 {
     static NSColor *color;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ color = FollowingColor(@"ManOpenLinkColor", &CurrentLink, ^{ return [NSColor linkColor]; }); });
+    dispatch_once(&once, ^{ color = FollowingColor(LinkColorName, &CurrentLink, ^{ return [NSColor linkColor]; }); });
     return color;
 }
 
@@ -89,15 +100,23 @@ NSColor *MOManPageBackgroundColor(void)
 {
     static NSColor *color;
     static dispatch_once_t once;
-    dispatch_once(&once, ^{ color = FollowingColor(@"ManOpenBackgroundColor", &CurrentBackground, ^{ return [NSColor textBackgroundColor]; }); });
+    dispatch_once(&once, ^{ color = FollowingColor(BackgroundColorName, &CurrentBackground, ^{ return [NSColor textBackgroundColor]; }); });
     return color;
+}
+
+BOOL MOIsManPageColor(NSColor *color)
+{
+    if (color == nil || color.type != NSColorTypeCatalog)
+        return NO;
+    NSString *name = color.colorNameComponent;
+    return [name isEqualToString:TextColorName] || [name isEqualToString:LinkColorName] || [name isEqualToString:BackgroundColorName];
 }
 
 void MOSetManPageColors(NSColor *text, NSColor *link, NSColor *background)
 {
-    CurrentText = text;
-    CurrentLink = link;
-    CurrentBackground = background;
+    CurrentText = MOIsManPageColor(text) ? nil : text;
+    CurrentLink = MOIsManPageColor(link) ? nil : link;
+    CurrentBackground = MOIsManPageColor(background) ? nil : background;
 }
 
 NSDictionary<NSAttributedStringKey, id> *MOManPageLinkAttributes(NSDictionary<NSAttributedStringKey, id> *current, NSColor *linkColor)

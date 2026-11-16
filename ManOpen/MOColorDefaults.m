@@ -6,6 +6,7 @@
 //
 
 #import "MOColorDefaults.h"
+#import "MOManPageStyle.h"
 
 NSString * const MOTextColorKey = @"ManTextColor";
 NSString * const MOLinkColorKey = @"ManLinkColor";
@@ -74,6 +75,16 @@ void MOMigrateColorDefaults(NSUserDefaults *defaults)
         NSData *data = [defaults dataForKey:key];
 
         if (data != nil && MOIsOldDefaultLinkColor(MOColorFromData(data)))
+            [defaults removeObjectForKey:key];
+    }
+    // A stored man page color was never a real choice (B18): it stood for whatever
+    // the page drew with, and drawing it led back to itself.
+    for (NSString *key in @[ MOTextColorKey, MOLinkColorKey, MOBackgroundColorKey,
+                             MOLegacyTextColorKey, MOLegacyLinkColorKey, MOLegacyBackgroundColorKey ])
+    {
+        NSData *data = [defaults dataForKey:key];
+
+        if (data != nil && MOIsManPageColor(MOColorFromData(data)))
             [defaults removeObjectForKey:key];
     }
 }

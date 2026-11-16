@@ -73,7 +73,7 @@
     NSString *nroff   = @"nroff -mandoc '%@'";
     NSData *textColor, *linkColor, *bgColor;
 
-    MOMigrateColorDefaults(userDefaults); // drop stored copies of the old fixed link color
+    MOMigrateColorDefaults(userDefaults); // drop stored copies of the old fixed link color and of the page colors (B18)
     textColor = [userDefaults dataForKey:MOLegacyTextColorKey];
     linkColor = [userDefaults dataForKey:MOLegacyLinkColorKey];
     bgColor = [userDefaults dataForKey:MOLegacyBackgroundColorKey];

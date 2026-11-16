@@ -38,8 +38,15 @@ NSColor *MOManPageTextColor(void);
 NSColor *MOManPageLinkColor(void);
 NSColor *MOManPageBackgroundColor(void);
 
-/* Sets what the man page colors draw as; nil means the system default for that color. */
+/*
+ * Sets what the man page colors draw as; nil means the system default for that
+ * color. One of the man page colors themselves (or a stored copy of one) also
+ * means the default: drawing it would only lead back to itself.
+ */
 void MOSetManPageColors(NSColor * _Nullable text, NSColor * _Nullable link, NSColor * _Nullable background);
+
+/* YES for one of the man page colors above, or a copy of one decoded from preferences. */
+BOOL MOIsManPageColor(NSColor * _Nullable color);
 
 /* `current` link attributes with the foreground color replaced by `linkColor`. */
 NSDictionary<NSAttributedStringKey, id> *MOManPageLinkAttributes(NSDictionary<NSAttributedStringKey, id> * _Nullable current, NSColor *linkColor);

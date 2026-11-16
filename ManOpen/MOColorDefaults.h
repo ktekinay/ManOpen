@@ -38,8 +38,9 @@ BOOL MOIsOldDefaultLinkColor(NSColor * _Nullable color);
 /*
  * One-time cleanup at launch: a stored link color (current or 2.x key) that's
  * exactly the old default was never chosen by the user, so it's removed and
- * the dynamic default applies. Any other stored color is kept. Call before
- * registering defaults.
+ * the dynamic default applies. So is a stored copy of one of the colors man
+ * pages draw with (MOIsManPageColor), which was never a real choice either.
+ * Any other stored color is kept. Call before registering defaults.
  */
 void MOMigrateColorDefaults(NSUserDefaults *defaults);
 

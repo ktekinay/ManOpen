@@ -6,6 +6,7 @@
 //
 
 #import "MOModalPanel.h"
+#import "MOManPageStyle.h"
 
 BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
 {
@@ -117,14 +118,21 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
 @property(nonatomic, strong) NSPanel *panel;
 @property(nonatomic, assign) MOModalPanelEnd end;
 @property(nonatomic, assign) BOOL ended;
+@property(nonatomic, copy, nullable) void (^whenEnding)(MOModalPanelEnd end);
 @end
 
 @implementation MOModalPanelSession
 
 + (MOModalPanelEnd)runPanel:(NSPanel *)panel
 {
+    return [self runPanel:panel whenEnding:nil];
+}
+
++ (MOModalPanelEnd)runPanel:(NSPanel *)panel whenEnding:(void (^)(MOModalPanelEnd end))whenEnding
+{
     MOModalPanelSession *session = [[self alloc] init];
     session.panel = panel;
+    session.whenEnding = whenEnding;
     return [session runSendingFontChangesTo:nil];
 }
 
@@ -185,6 +193,8 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
     self.end = end;
     if (end == MOModalPanelEndOK)
         [self.panel makeFirstResponder:nil]; // finish an edit in progress, such as a typed font size or hex color
+    if (self.whenEnding != nil)
+        self.whenEnding(end);
     [NSApp stopModal];
 }
 
@@ -230,10 +240,18 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
     MOPreferenceSnapshot *original = (key != nil && domain != nil) ? [MOPreferenceSnapshot snapshotOfKey:key inDefaults:defaults domain:domain] : nil;
     NSColor *originalColor = self.color;
 
-    MOModalPanelEnd end = [MOModalPanelSession runPanel:[NSColorPanel sharedColorPanel]];
+    // Stop following the panel while it's still open (B18). Once it closes,
+    // another window becomes key, and a man page's text view there can set
+    // the panel to the page's own text color, which an active well would take
+    // and store. Also, later uses of the color panel mustn't change this
+    // preference (M5).
+    MOModalPanelEnd end = [MOModalPanelSession runPanel:[NSColorPanel sharedColorPanel] whenEnding:^(MOModalPanelEnd end) {
+        [self deactivate];
+    }];
 
-    [self deactivate]; // so later uses of the color panel don't change this preference (M5)
-    if (!MOModalPanelEndKeepsChoice(end))
+    [self deactivate]; // in case the session ended without calling back
+    // A man page color is never a choice: it only stands for what pages draw with.
+    if (!MOModalPanelEndKeepsChoice(end) || MOIsManPageColor(self.color))
     {
         if (original != nil)
             [original restoreInDefaults:defaults]; // the binding shows it in the well

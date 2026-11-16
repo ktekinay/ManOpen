@@ -47,6 +47,14 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end);
 + (MOModalPanelEnd)runPanel:(NSPanel *)panel;
 
 /*
+ * The same, calling `whenEnding` as the session ends but while the panel is
+ * still open and modal, before any other window can become key. Anything
+ * that must stop following the panel (such as an active color well) stops
+ * there, so closing the panel can't change it.
+ */
++ (MOModalPanelEnd)runPanel:(NSPanel *)panel whenEnding:(nullable void (^)(MOModalPanelEnd end))whenEnding;
+
+/*
  * Runs the shared Font panel the same way, sending the changes chosen in it
  * to `target`'s changeFont: (M2). A modal session refuses actions from the
  * font manager to a target outside the panel, such as the Preferences
