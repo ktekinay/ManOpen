@@ -195,15 +195,12 @@
     NSFontManager *manager = [NSFontManager sharedFontManager];
     NSString *domain = [NSBundle mainBundle].bundleIdentifier;
     MOPreferenceSnapshot *original = [MOPreferenceSnapshot snapshotOfKey:@"ManFont" inDefaults:defaults domain:domain];
-    id previousTarget = manager.target;
 
     [[self window] makeFirstResponder:nil];
     [manager setSelectedFont:[fontField font] isMultiple:NO];
-    manager.target = self; // the panel is key while modal, so send changeFont: here directly
 
-    MOModalPanelEnd end = [MOModalPanelSession runPanel:[manager fontPanel:YES]];
+    MOModalPanelEnd end = [MOModalPanelSession runFontPanelSendingChangesTo:self];
 
-    manager.target = previousTarget;
     if (!MOModalPanelEndKeepsChoice(end))
     {
         [original restoreInDefaults:defaults];

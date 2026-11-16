@@ -36,8 +36,9 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
 
 #pragma mark - The OK and Cancel buttons
 
-@interface MOModalPanelAccessoryView : NSView
+@interface MOModalPanelAccessoryView : NSView <NSFontChanging>
 @property(nonatomic, copy) void (^onEnd)(MOModalPanelEnd end);
+@property(nonatomic, weak, nullable) id<NSFontChanging> fontTarget;
 @end
 
 @implementation MOModalPanelAccessoryView
@@ -80,6 +81,22 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
     self.onEnd(MOModalPanelEndCancel);
 }
 
+/*
+ * While a panel is modal, the application refuses an action whose sender and
+ * target are outside the panel, unless the target says it works when modal.
+ * The font manager has no window, so its changes would never reach the
+ * Preferences window. They come here instead, and are passed on.
+ */
+- (BOOL)worksWhenModal
+{
+    return self.fontTarget != nil;
+}
+
+- (void)changeFont:(nullable NSFontManager *)sender
+{
+    [self.fontTarget changeFont:sender];
+}
+
 /* Command-W cancels: the close button is hidden while the panel is modal. */
 - (BOOL)performKeyEquivalent:(NSEvent *)event
 {
@@ -108,10 +125,18 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
 {
     MOModalPanelSession *session = [[self alloc] init];
     session.panel = panel;
-    return [session run];
+    return [session runSendingFontChangesTo:nil];
 }
 
-- (MOModalPanelEnd)run
++ (MOModalPanelEnd)runFontPanelSendingChangesTo:(id)target
+{
+    NSFontManager *manager = [NSFontManager sharedFontManager];
+    MOModalPanelSession *session = [[self alloc] init];
+    session.panel = [manager fontPanel:YES];
+    return [session runSendingFontChangesTo:target];
+}
+
+- (MOModalPanelEnd)runSendingFontChangesTo:(nullable id<NSFontChanging>)fontTarget
 {
     NSPanel *panel = self.panel;
     BOOL hasAccessory = [panel respondsToSelector:@selector(accessoryView)] && [panel respondsToSelector:@selector(setAccessoryView:)];
@@ -127,6 +152,10 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
     if (hasAccessory)
         [(id)panel setAccessoryView:accessory];
     closeButton.hidden = YES;
+    NSFontManager *manager = (fontTarget != nil) ? [NSFontManager sharedFontManager] : nil;
+    id previousFontTarget = manager.target;
+    accessory.fontTarget = fontTarget;
+    manager.target = accessory;
 
     // Any other close (for example the app quitting) counts as Cancel.
     id observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSWindowWillCloseNotification object:panel queue:nil
@@ -139,6 +168,7 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end)
     [NSApp runModalForWindow:panel];
 
     [[NSNotificationCenter defaultCenter] removeObserver:observer];
+    manager.target = previousFontTarget;
     if (panel.isVisible)
         [panel orderOut:nil];
     if (hasAccessory)

@@ -45,6 +45,14 @@ BOOL MOModalPanelEndKeepsChoice(MOModalPanelEnd end);
  */
 @interface MOModalPanelSession : NSObject
 + (MOModalPanelEnd)runPanel:(NSPanel *)panel;
+
+/*
+ * Runs the shared Font panel the same way, sending the changes chosen in it
+ * to `target`'s changeFont: (M2). A modal session refuses actions from the
+ * font manager to a target outside the panel, such as the Preferences
+ * window, so the session passes them on itself.
+ */
++ (MOModalPanelEnd)runFontPanelSendingChangesTo:(id<NSFontChanging>)target;
 @end
 
 /*
