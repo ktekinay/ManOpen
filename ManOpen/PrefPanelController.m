@@ -6,6 +6,7 @@
 #import "MOManPath.h"
 #import "MOColorDefaults.h"
 #import "MOModalPanel.h"
+#import "MOFontDefaults.h"
 
 @implementation NSUserDefaults (ManOpenPreferences)
 
@@ -30,21 +31,7 @@
     
 - (NSFont *)manFont
 {
-    NSString *fontString = [self stringForKey:@"ManFont"];
-    
-    if (fontString != nil)
-    {
-        NSRange spaceRange = [fontString rangeOfString:@" "];
-        if (spaceRange.length > 0)
-        {
-            CGFloat size = [[fontString substringToIndex:spaceRange.location] floatValue];
-            NSString *name = [fontString substringFromIndex:NSMaxRange(spaceRange)];
-            NSFont *font = [NSFont fontWithName:name size:size];
-            if (font != nil) return font;
-        }
-    }
-    
-    return [NSFont userFixedPitchFontOfSize:12.0f]; // Monaco
+    return MOManFont(self);
 }
 
 - (NSString *)manPath
@@ -186,6 +173,14 @@
 - (IBAction)restoreDefaultColors:(id)sender
 {
     MORestoreDefaultColors([NSUserDefaults standardUserDefaults]);
+}
+
+/* Removes the stored font, so the system's fixed-pitch font at 12 pt applies again (Plans 1a.14). */
+- (IBAction)restoreDefaultFont:(id)sender
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    MORestoreDefaultFont(defaults);
+    [self setFontFieldToFont:[defaults manFont]]; // open pages follow through 1a.9
 }
 
 /* The Font panel runs modally, with OK and Cancel (Plans 1a.10). Open pages preview the font live (1a.9). */

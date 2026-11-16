@@ -114,6 +114,10 @@
 		7A9A60AF5A4963FC43F56337 /* MOModalPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FAB5ECB2F70AF8F3E5993C /* MOModalPanel.m */; };
 		625BEB0E6661B891173277D8 /* MOModalPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = F9F4DD692A5E6ECD387469B5 /* MOModalPanel.h */; };
 		340AD17C4F5492564CF6E33D /* MOModalPanelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AB76360C3DA6888BCA76944A /* MOModalPanelTests.m */; };
+		F943FD08DEA16AF74EED06CD /* MOFontDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = DE61378962E100146CC5579F /* MOFontDefaults.m */; };
+		C5A987366649E520644AC6EF /* MOFontDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = DE61378962E100146CC5579F /* MOFontDefaults.m */; };
+		6EAC78772B47671AF3B70623 /* MOFontDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 30278FB85EE842B0F73EDCB5 /* MOFontDefaults.h */; };
+		88230B559D88EB69EAC40DBD /* MOFontDefaultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0E857195715E15AB41FACF /* MOFontDefaultsTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -273,6 +277,9 @@
 		E7FAB5ECB2F70AF8F3E5993C /* MOModalPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOModalPanel.m; sourceTree = "<group>"; };
 		F9F4DD692A5E6ECD387469B5 /* MOModalPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOModalPanel.h; sourceTree = "<group>"; };
 		AB76360C3DA6888BCA76944A /* MOModalPanelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOModalPanelTests.m; sourceTree = "<group>"; };
+		DE61378962E100146CC5579F /* MOFontDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOFontDefaults.m; sourceTree = "<group>"; };
+		30278FB85EE842B0F73EDCB5 /* MOFontDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOFontDefaults.h; sourceTree = "<group>"; };
+		1A0E857195715E15AB41FACF /* MOFontDefaultsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOFontDefaultsTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,6 +393,7 @@
 		D39278F10821FFA400376676 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DE61378962E100146CC5579F /* MOFontDefaults.m */,
 				E7FAB5ECB2F70AF8F3E5993C /* MOModalPanel.m */,
 				AA3D984DDCF8C47D5B3ED321 /* MOPreferenceUpdates.m */,
 				8C6EB9CA8071470981ECD921 /* MOManPageStyle.m */,
@@ -411,6 +419,7 @@
 		D39278FE0821FFA400376676 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				30278FB85EE842B0F73EDCB5 /* MOFontDefaults.h */,
 				F9F4DD692A5E6ECD387469B5 /* MOModalPanel.h */,
 				1A1B82FDE225F2CDC5C92EC1 /* MOPreferenceUpdates.h */,
 				B4A8B9E950ADF0484B4A4101 /* MOManPageStyle.h */,
@@ -584,6 +593,7 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				1A0E857195715E15AB41FACF /* MOFontDefaultsTests.m */,
 				AB76360C3DA6888BCA76944A /* MOModalPanelTests.m */,
 				2D135230E10878CD3C344B0B /* MOPreferenceUpdatesTests.m */,
 				F959DF3AE1ED065E19C148BA /* MOManPageStyleTests.m */,
@@ -610,6 +620,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EAC78772B47671AF3B70623 /* MOFontDefaults.h in Headers */,
 				625BEB0E6661B891173277D8 /* MOModalPanel.h in Headers */,
 				BCCB720231256EA2F985DD05 /* MOPreferenceUpdates.h in Headers */,
 				289C2C67C8BB8B5F21FD518D /* MOManPageStyle.h in Headers */,
@@ -817,6 +828,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F943FD08DEA16AF74EED06CD /* MOFontDefaults.m in Sources */,
 				5C9ABA01FD1EDF7D3F23F398 /* MOModalPanel.m in Sources */,
 				EC392BE7B0E7D600C044E8A4 /* MOPreferenceUpdates.m in Sources */,
 				A31C26ABEDA29CB549EA7DC6 /* MOManPageStyle.m in Sources */,
@@ -868,6 +880,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88230B559D88EB69EAC40DBD /* MOFontDefaultsTests.m in Sources */,
+				C5A987366649E520644AC6EF /* MOFontDefaults.m in Sources */,
 				340AD17C4F5492564CF6E33D /* MOModalPanelTests.m in Sources */,
 				7A9A60AF5A4963FC43F56337 /* MOModalPanel.m in Sources */,
 				FD5AC802850BB3A4399A33C2 /* MOPreferenceUpdatesTests.m in Sources */,

@@ -181,6 +181,16 @@
                                                 <action selector="openFontPanel:" target="-2" id="274"/>
                                             </connections>
                                         </button>
+                                        <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MOr-dF-bTn">
+                                            <rect key="frame" x="135" y="199" width="149" height="32"/>
+                                            <buttonCell key="cell" type="push" title="Restore Default Font" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MOr-dF-cLl">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="restoreDefaultFont:" target="-2" id="MOr-dF-aCt"/>
+                                            </connections>
+                                        </button>
                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="133">
                                             <rect key="frame" x="17" y="167" width="261" height="32"/>
                                             <constraints>
@@ -304,6 +314,9 @@
                                         <constraint firstItem="138" firstAttribute="top" secondItem="238" secondAttribute="bottom" constant="8" symbolic="YES" id="xbN-9M-Gd4"/>
                                         <constraint firstItem="245" firstAttribute="top" secondItem="138" secondAttribute="bottom" constant="25" id="xsc-Fq-tvh"/>
                                         <constraint firstItem="255" firstAttribute="centerY" secondItem="256" secondAttribute="centerY" id="zFW-yt-CdR"/>
+                                        <constraint firstItem="MOr-dF-bTn" firstAttribute="trailing" secondItem="133" secondAttribute="trailing" id="MOr-dF-c01"/>
+                                        <constraint firstItem="MOr-dF-bTn" firstAttribute="centerY" secondItem="245" secondAttribute="centerY" id="MOr-dF-c02"/>
+                                        <constraint firstItem="MOr-dF-bTn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="245" secondAttribute="trailing" constant="12" id="MOr-dF-c03"/>
                                         <constraint firstItem="MOr-dC-bTn" firstAttribute="leading" secondItem="245" secondAttribute="leading" id="MOr-dC-c01"/>
                                         <constraint firstItem="MOr-dC-bTn" firstAttribute="top" secondItem="255" secondAttribute="bottom" constant="12" id="MOr-dC-c02"/>
                                     </constraints>

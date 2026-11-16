@@ -17,6 +17,7 @@
 
 - (IBAction)openFontPanel:(id)sender;
 - (IBAction)restoreDefaultColors:(id)sender;
+- (IBAction)restoreDefaultFont:(id)sender;
 
 @end
 
