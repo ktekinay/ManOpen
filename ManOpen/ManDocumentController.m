@@ -9,6 +9,7 @@
 #import "MOPreferenceUpdates.h"
 #import "MOManPageStyle.h"
 #import "MOColorDefaults.h"
+#import "MOManPageArguments.h"
 #import "MOSectionListing.h"
 #import "PrefPanelController.h"
 
@@ -391,9 +392,12 @@ static void *MOPreferenceObservationContext = &MOPreferenceObservationContext;
 {
     NSMutableString *command;
     NSData *data;
+    NSString *arguments = MOManPageArguments(name, section); // single arguments, and only a possible page (Plans 6.0)
 
+    if (arguments == nil)
+        return nil;
     command = [self manCommandWithManPath:manPath];
-    [command appendFormat:@" -w %@ %@", section? section:@"", name];
+    [command appendFormat:@" -w%@", arguments];
 
     data = [self dataByExecutingCommand:command];
     if (data != nil)

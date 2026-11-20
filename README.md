@@ -96,6 +96,7 @@ Version 3.1:
 - Links now use the system link color by default, so they're readable in Dark Mode and with Increase Contrast. If your link color was still the old default blue, it switches to the new default automatically; colors you chose are kept. A new **Restore Default Colors** button in Preferences ▸ Appearance goes back to the system colors.
 - The man page text, link and background colors in Preferences can now be set separately for Light and Dark Mode. The color wells show and change the colors for the mode ManOpen is in; switch modes to set the others. Restore Default Colors resets only the current mode. Colors set in earlier versions now apply to Light Mode only, so pages in Dark Mode use the dark system colors.
 - Man pages now always print in the standard light colors, dark text and links on white paper, whether ManOpen is in Light or Dark Mode and whatever colors are set in Preferences.
+- Page names and sections are now checked before ManOpen looks them up, wherever they come from (the Open panel, links, Services, `x-man-page:` URLs, `openman`, or a reopened window), and are passed to `man` exactly as given. Text that can't be a page name, such as one starting with "-", shows "No manual entry."
 - Added unit tests. See "Building" above.
 
 Version 3.0:

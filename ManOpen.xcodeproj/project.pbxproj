@@ -122,6 +122,10 @@
 		2B105821682E38489EE3F04D /* MOColorWellsController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE84C946FE24269D3FEE473F /* MOColorWellsController.m */; };
 		FC8FBA348F9C20DBEF69DEDA /* MOColorWellsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B06082E56515CAFF4B2505B /* MOColorWellsController.h */; };
 		6214AFBC39A6F6305F645E9F /* MOColorWellsControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E24B5BF6468418EEDE19FD /* MOColorWellsControllerTests.m */; };
+		1229BB8A35A334C752F9B272 /* MOManPageArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAD8A41B96D12DDA22B8094 /* MOManPageArguments.m */; };
+		EF11BA55788B09C333FF779A /* MOManPageArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAD8A41B96D12DDA22B8094 /* MOManPageArguments.m */; };
+		7041134EF81785834DC39711 /* MOManPageArguments.h in Headers */ = {isa = PBXBuildFile; fileRef = 19507EA724BF457D019510C6 /* MOManPageArguments.h */; };
+		AAF941F1C064EC107CD3CF71 /* MOManPageArgumentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4B3A18CE7A51C60AF9D887 /* MOManPageArgumentsTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -287,6 +291,9 @@
 		CE84C946FE24269D3FEE473F /* MOColorWellsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOColorWellsController.m; sourceTree = "<group>"; };
 		4B06082E56515CAFF4B2505B /* MOColorWellsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOColorWellsController.h; sourceTree = "<group>"; };
 		56E24B5BF6468418EEDE19FD /* MOColorWellsControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOColorWellsControllerTests.m; sourceTree = "<group>"; };
+		0EAD8A41B96D12DDA22B8094 /* MOManPageArguments.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOManPageArguments.m; sourceTree = "<group>"; };
+		19507EA724BF457D019510C6 /* MOManPageArguments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MOManPageArguments.h; sourceTree = "<group>"; };
+		0C4B3A18CE7A51C60AF9D887 /* MOManPageArgumentsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MOManPageArgumentsTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -400,6 +407,7 @@
 		D39278F10821FFA400376676 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0EAD8A41B96D12DDA22B8094 /* MOManPageArguments.m */,
 				CE84C946FE24269D3FEE473F /* MOColorWellsController.m */,
 				DE61378962E100146CC5579F /* MOFontDefaults.m */,
 				E7FAB5ECB2F70AF8F3E5993C /* MOModalPanel.m */,
@@ -427,6 +435,7 @@
 		D39278FE0821FFA400376676 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				19507EA724BF457D019510C6 /* MOManPageArguments.h */,
 				4B06082E56515CAFF4B2505B /* MOColorWellsController.h */,
 				30278FB85EE842B0F73EDCB5 /* MOFontDefaults.h */,
 				F9F4DD692A5E6ECD387469B5 /* MOModalPanel.h */,
@@ -602,6 +611,7 @@
 		D78A144A51F330F4AF763E91 /* ManOpenTests */ = {
 			isa = PBXGroup;
 			children = (
+				0C4B3A18CE7A51C60AF9D887 /* MOManPageArgumentsTests.m */,
 				56E24B5BF6468418EEDE19FD /* MOColorWellsControllerTests.m */,
 				1A0E857195715E15AB41FACF /* MOFontDefaultsTests.m */,
 				AB76360C3DA6888BCA76944A /* MOModalPanelTests.m */,
@@ -630,6 +640,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7041134EF81785834DC39711 /* MOManPageArguments.h in Headers */,
 				FC8FBA348F9C20DBEF69DEDA /* MOColorWellsController.h in Headers */,
 				6EAC78772B47671AF3B70623 /* MOFontDefaults.h in Headers */,
 				625BEB0E6661B891173277D8 /* MOModalPanel.h in Headers */,
@@ -839,6 +850,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1229BB8A35A334C752F9B272 /* MOManPageArguments.m in Sources */,
 				17F98387EF5E1C33C81B35B1 /* MOColorWellsController.m in Sources */,
 				F943FD08DEA16AF74EED06CD /* MOFontDefaults.m in Sources */,
 				5C9ABA01FD1EDF7D3F23F398 /* MOModalPanel.m in Sources */,
@@ -892,6 +904,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAF941F1C064EC107CD3CF71 /* MOManPageArgumentsTests.m in Sources */,
+				EF11BA55788B09C333FF779A /* MOManPageArguments.m in Sources */,
 				6214AFBC39A6F6305F645E9F /* MOColorWellsControllerTests.m in Sources */,
 				2B105821682E38489EE3F04D /* MOColorWellsController.m in Sources */,
 				88230B559D88EB69EAC40DBD /* MOFontDefaultsTests.m in Sources */,

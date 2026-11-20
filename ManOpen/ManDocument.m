@@ -8,6 +8,7 @@
 #import "MORestorationState.h"
 #import "MOManPagePrinting.h"
 #import "MOManPageStyle.h"
+#import "MOManPageArguments.h"
 
 @interface ManDocument ()
 /* The command the page was generated from, before the cat2rtf filter. */
@@ -35,7 +36,6 @@
     
     if (section && [section length] > 0)
     {
-        [command appendFormat:@" %@", [section lowercaseString]];
         self.xManPageURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"x-man-page://%@/%@", section, title]];
     }
     else
@@ -49,7 +49,17 @@
                    section, MORestoreSectionKey,
                    nil];
     
-    [command appendFormat:@" %@", name];
+    // The name and section reach man as single arguments, and only if they
+    // could be a page's (Plans 6.0). Otherwise nothing runs: no manual entry.
+    NSString *arguments = MOManPageArguments(name, section);
+    if (arguments == nil)
+    {
+        self.sourceCommand = nil;
+        self.taskData = nil;
+        [self showData];
+        return;
+    }
+    [command appendString:arguments];
     
     [self loadCommand:command];
 }
